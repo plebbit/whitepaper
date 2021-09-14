@@ -54,4 +54,12 @@ A peer-to-peer pubsub network is susceptible to spam and does not scale well. Pu
 
 Captcha server lifecycle
 
-...
+1. The app loads the captcha server URL in an iframe before publishing a post. This url is operated by each subplebbit owner individually.
+2. The server sends a visual or audio challenge and it appears inside the iframe.
+3. The user completes the challenge and sends his answer back to the server.
+4. If the challenge answer is correct, the server sends back a digital signature for the post.
+5. The user can now include this signature with his post, and when the subplebbit owner encounters that post in the pubsub network, he knows it is not spam.
+
+Conclusion
+
+We believe that the design above would solve the problems of a serverless, adminless decentralized Reddit alternative. It would allow unlimited amounts of subplebbits, users, posts, comments and votes. This is achieved by not caring about the order or availability of old data. It would allow users to post for free using an indidical Reddit interface. It would allow subplebbit owners to moderate spam semi-automatically using their own captcha server implementations. It would allow the Plebbit client developers to serve an unlimited amount of users, without any server, legal, advertising or moderation infrastructure.
