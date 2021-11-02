@@ -8,7 +8,7 @@
     "dev": "kill -9 $(lsof -t -i:3000) ; nodemon src/index.js",
     "debug": "nodemon --inspect src/index.js"
   },
-  "author": "lolboysgaming",
+  "author": "lolboysg",
   "license": "ISC",
   "type": "module",
   "dependencies": {
@@ -17,8 +17,11 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "ipfs-core": "^0.11.1",
+    "morgan": "^1.10.0",
     "mysql2-async": "^1.1.1",
     "node-cron": "^3.0.0",
-    "nodemon": "^2.0.14"
+    "nodemon": "^2.0.14",
+    "swagger-ui-express": "^4.1.6",
+    "yamljs": "^0.3.0"
   }
 }
