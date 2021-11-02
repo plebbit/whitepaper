@@ -3,6 +3,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const ipfs = create(process.env.API)
+const ipfs = create(process.env.IPFS_API);
 
 export default ipfs;
