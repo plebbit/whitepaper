@@ -65,6 +65,7 @@ const post = {
             postComments.push(latestPost.data);
             latestPost = await axios.get(process.env.IPFS_GATEWAY + 'ipfs/' + latestPost.data.prev);
         }
+        postComments.push(latestPost.data);
 
         console.log({ "title": post.data.title, "content": post.data.content, "upvote": post.data.upvote, "comments": postComments });
         res.json({ "title": post.data.title, "content": post.data.content, "upvote": post.data.upvote, "comments": postComments });

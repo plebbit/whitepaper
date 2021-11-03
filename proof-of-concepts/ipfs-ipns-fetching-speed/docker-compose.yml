@@ -1,19 +1,24 @@
 version: "3"
 
 services:
-  node:
-    build: .
+  api:
+    build:
+      context: ./api
     ports:
       - '3000:3000'
     env_file:
       - .env
-    environment: 
-      MYSQL_HOST: mariadb
     networks:
       - docker-service
     depends_on: 
       - mariadb
       - ipfs
+
+  front-end:
+    build:
+      context: ./client
+    ports:
+      - '80:80'
 
   mariadb:
     image: mariadb

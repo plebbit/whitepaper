@@ -11,7 +11,7 @@ import comment from './routes/comment.js';
 import publishComments from './scripts/publishComments.js';
 import publishPosts from './scripts/publishPosts.js';
 
-dotenv.config()
+dotenv.config({ path: new URL(import.meta.url + '/../../../.env') });
 const app = express();
 const swaggerDocument = YAML.load('./docs.yaml');
 
@@ -33,7 +33,7 @@ app.use('/post', post);
 app.use('/comment', comment);
 
 var server = app.listen(process.env.APP_PORT, () => {
-    console.log(`app listening at`, process.env.APP_PORT);
+    console.log(`app listening at`, process.env.API_PORT);
 });
 
 server.timeout = 10000000;
