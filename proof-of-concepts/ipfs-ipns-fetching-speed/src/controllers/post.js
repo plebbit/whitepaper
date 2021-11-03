@@ -28,8 +28,11 @@ const post = {
         let prev = await db.query(`SELECT * FROM posts WHERE key_title = ? ORDER BY id DESC LIMIT 1`, [subplebbit.data.title]);
         if (prev.length != 0)
             prev = prev[0].CID;
-        else
-            prev = null;
+        else {
+            const subplebbitIPNS = await axios.get(process.env.IPFS_GATEWAY + 'ipns/' + subplebbit.data.latestPosts);
+
+            prev = subplebbitIPNS.data.latestPost;
+        }
 
         // Create the IPFS storing the post
         let newPostCid = ((await ipfs.add(JSON.stringify(
@@ -63,8 +66,8 @@ const post = {
             latestPost = await axios.get(process.env.IPFS_GATEWAY + 'ipfs/' + latestPost.data.prev);
         }
 
-        console.log({ "title": subplebbit.data.title, "content": subplebbit.data.content, "upvote": subplebbit.data.upvote, "comments": postComments });
-        res.json({ "title": subplebbit.data.title, "content": subplebbit.data.content, "upvote": subplebbit.data.upvote, "comments": postComments });
+        console.log({ "title": post.data.title, "content": post.data.content, "upvote": post.data.upvote, "comments": postComments });
+        res.json({ "title": post.data.title, "content": post.data.content, "upvote": post.data.upvote, "comments": postComments });
     }
 }
 

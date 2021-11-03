@@ -14,8 +14,11 @@ const comment = {
         let prev = await db.query(`SELECT * FROM comments WHERE key_title = ? ORDER BY id DESC LIMIT 1;`, [post.data.title]);
         if (prev.length != 0)
             prev = prev[0].CID;
-        else
-            prev = null;
+        else {
+            const postIPNS = await axios.get(process.env.IPFS_GATEWAY + 'ipns/' + post.data.latestComments);
+
+            prev = postIPNS.data.latestComment;
+        }
 
         // Create the IPFS storing the comment
         let newCommentCid = ((await ipfs.add(JSON.stringify(

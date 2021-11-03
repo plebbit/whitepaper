@@ -1,9 +1,8 @@
 import ipfs from '../config/ipfs.js';
 import db from '../config/db.js';
 import axios from 'axios';
-import cron from 'node-cron';
 
-cron.schedule('30 * * * *', async () => {
+export default async () => {
     const postsToUpdate = await db.query(`SELECT DISTINCT record FROM comments`);
     const comments = await db.query(`SELECT * FROM comments ORDER BY id DESC`);
 
@@ -21,4 +20,4 @@ cron.schedule('30 * * * *', async () => {
         await ipfs.name.publish('/ipfs/' + cid, { key: commentByPost[0].key_title });
     }
     await db.query(`DELETE FROM comments`);
-});
+};

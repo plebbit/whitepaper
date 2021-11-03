@@ -1,9 +1,8 @@
 import ipfs from '../config/ipfs.js';
 import db from '../config/db.js';
 import axios from 'axios';
-import cron from 'node-cron';
 
-cron.schedule('0 * * * *', async () => {
+export default async () => {
     const subplebbitsToUpdate = await db.query(`SELECT DISTINCT record FROM posts`);
     const posts = await db.query(`SELECT * FROM posts ORDER BY id DESC`);
 
@@ -21,4 +20,4 @@ cron.schedule('0 * * * *', async () => {
         await ipfs.name.publish('/ipfs/' + cid, { key: postBySubplebbit[0].key_title });
     }
     await db.query(`DELETE FROM posts`);
-});
+};
