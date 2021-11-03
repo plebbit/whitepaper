@@ -6,7 +6,7 @@ const subplebbit = {
         const title = req.body.title;
 
         // Get the content of the IPFS containing the subplebbit's list
-        const subplebbitListName = 'k2k4r8m9xwpw5kczi1c21ewml8829axha149dckia8r5g4pnxknh6qdb';
+        const subplebbitListName = 'k2k4r8nkglxq7sqq2trdzb9eyl1q2oftj2ymm2o5agsvimanahneaedg';
         const subplebbitList = await axios.get(process.env.IPFS_GATEWAY + 'ipns/' + subplebbitListName);
 
         // Generate a new IPNS record to store the posts of the subplebbit
@@ -39,7 +39,7 @@ const subplebbit = {
         let amount = req.params.amount;
 
         // Get the content of the IPFS containing the subplebbit's list
-        const subplebbitListName = 'k2k4r8m9xwpw5kczi1c21ewml8829axha149dckia8r5g4pnxknh6qdb';
+        const subplebbitListName = 'k2k4r8nkglxq7sqq2trdzb9eyl1q2oftj2ymm2o5agsvimanahneaedg';
         const subplebbitList = await axios.get(process.env.IPFS_GATEWAY + 'ipns/' + subplebbitListName);
 
         // update the maximum amount of subplebbits if it exceed that number

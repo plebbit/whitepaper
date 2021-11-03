@@ -59,7 +59,7 @@ const post = {
         // retrieve the latest comments data
         let postComments = [];
         while (latestPost.data.prev != null) {
-            subplebbitPosts.push(latestPost.data);
+            postComments.push(latestPost.data);
             latestPost = await axios.get(process.env.IPFS_GATEWAY + 'ipfs/' + latestPost.data.prev);
         }
 

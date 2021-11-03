@@ -102,9 +102,9 @@ paths:
   /comment:
     post:
       parameters:
-        - name: title
+        - name: content
           required: true
-          description: title of the new comment
+          description: content of the new comment
           schema:
             type: string
         - name: postCID

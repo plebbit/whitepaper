@@ -13,6 +13,7 @@ services:
       - docker-service
     depends_on: 
       - mariadb
+      - ipfs
 
   mariadb:
     image: mariadb
@@ -25,7 +26,7 @@ services:
     volumes:
       - maria-data:/data/db
       - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
-  
+
   ipfs:
     image: ipfs/go-ipfs
     ports:

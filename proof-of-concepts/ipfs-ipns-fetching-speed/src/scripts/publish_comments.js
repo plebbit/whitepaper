@@ -3,7 +3,7 @@ import db from '../config/db.js';
 import axios from 'axios';
 import cron from 'node-cron';
 
-cron.schedule('0 * * * *', async () => {
+cron.schedule('30 * * * *', async () => {
     const postsToUpdate = await db.query(`SELECT DISTINCT record FROM comments`);
     const comments = await db.query(`SELECT * FROM comments ORDER BY id DESC`);
 
@@ -12,8 +12,11 @@ cron.schedule('0 * * * *', async () => {
         const commentByPost = await comments.filter(element => element.record == postToUpdate.record);
         const newLatestCommentsCID = await commentByPost.map(element => element.CID);
 
-        postData.comments = postData.posts.concat(newLatestCommentsCID);
-        postData.latestPost = commentByPost[0].CID;
+        postData.comments = postData.comments.concat(newLatestCommentsCID);
+        const length = postData.comments.length;
+        if (length > 100)
+            postData.comments = postData.comments.splice(-(length - 100), (length - 100));
+        postData.latestComment = commentByPost[0].CID;
         let { cid } = await ipfs.add(JSON.stringify(postData));
         await ipfs.name.publish('/ipfs/' + cid, { key: commentByPost[0].key_title });
     }

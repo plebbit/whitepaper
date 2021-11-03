@@ -20,11 +20,8 @@ const comment = {
         // Create the IPFS storing the comment
         let newCommentCid = ((await ipfs.add(JSON.stringify(
             {
-               title,
                content,
-               upvote: 0,
                prev,
-               latestComments: response.name
             }
         ))).cid).toString();
         await db.query(`INSERT INTO comments (CID, record, key_title) VALUES (?, ?, ?)`, [newCommentCid, post.data.latestComments, post.data.title]);

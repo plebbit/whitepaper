@@ -13,6 +13,9 @@ cron.schedule('0 * * * *', async () => {
         const newLatestPostsCID = await postBySubplebbit.map(element => element.CID);
 
         subplebbitData.posts = subplebbitData.posts.concat(newLatestPostsCID);
+        const length = subplebbitData.posts.length;
+        if (length > 100)
+            subplebbitData.posts = subplebbitData.posts.splice(-(length - 100), (length - 100));
         subplebbitData.latestPost = postBySubplebbit[0].CID;
         let { cid } = await ipfs.add(JSON.stringify(subplebbitData));
         await ipfs.name.publish('/ipfs/' + cid, { key: postBySubplebbit[0].key_title });
