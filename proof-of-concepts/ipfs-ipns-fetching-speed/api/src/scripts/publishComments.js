@@ -11,12 +11,11 @@ export default async () => {
         const commentByPost = await comments.filter(element => element.record == postToUpdate.record);
         const newLatestCommentsCID = await commentByPost.map(element => element.CID);
 
-        postData.comments = postData.comments.concat(newLatestCommentsCID);
+        postData.comments = newLatestCommentsCID.concat(postData.comments);
         const length = postData.comments.length;
         if (length > 100)
-            postData.comments = postData.comments.splice(-(length - 100), (length - 100));
+            postData.comments.splice(-(length - 100), (length - 100));
         postData.latestComment = commentByPost[0].CID;
-        console.log(postData.comments.length, postData.latestComment)
         let { cid } = await ipfs.add(JSON.stringify(postData));
         await ipfs.name.publish('/ipfs/' + cid, { key: commentByPost[0].key_title });
     }

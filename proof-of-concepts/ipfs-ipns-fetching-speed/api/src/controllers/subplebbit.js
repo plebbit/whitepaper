@@ -1,13 +1,13 @@
 import ipfs from '../config/ipfs.js';
 import axios from 'axios';
+import conf from "../config/subplebbitListName.js";
 
 const subplebbit = {
     createSubplebbit: async (req, res) => {
         const title = req.body.title;
 
         // Get the content of the IPFS containing the subplebbit's list
-        const subplebbitListName = 'k2k4r8nkglxq7sqq2trdzb9eyl1q2oftj2ymm2o5agsvimanahneaedg';
-        const subplebbitList = await axios.get(process.env.IPFS_GATEWAY + 'ipns/' + subplebbitListName);
+        const subplebbitList = await axios.get(process.env.IPFS_GATEWAY + 'ipns/' + conf.subplebbitListName);
 
         // Generate a new IPNS record to store the posts of the subplebbit
         let { cid } = await ipfs.add(JSON.stringify(
@@ -39,8 +39,7 @@ const subplebbit = {
         let amount = req.params.amount;
 
         // Get the content of the IPFS containing the subplebbit's list
-        const subplebbitListName = 'k2k4r8nkglxq7sqq2trdzb9eyl1q2oftj2ymm2o5agsvimanahneaedg';
-        const subplebbitList = await axios.get(process.env.IPFS_GATEWAY + 'ipns/' + subplebbitListName);
+        const subplebbitList = await axios.get(process.env.IPFS_GATEWAY + 'ipns/' + conf.subplebbitListName);
 
         // update the maximum amount of subplebbits if it exceed that number
         amount = amount > subplebbitList.data.subplebbits.length ? subplebbitList.data.subplebbits.length : amount;

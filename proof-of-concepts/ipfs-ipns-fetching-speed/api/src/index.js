@@ -32,7 +32,7 @@ app.use('/subplebbit', subplebbit);
 app.use('/post', post);
 app.use('/comment', comment);
 
-var server = app.listen(process.env.APP_PORT, () => {
+var server = app.listen(process.env.API_PORT, () => {
     console.log(`app listening at`, process.env.API_PORT);
 });
 
