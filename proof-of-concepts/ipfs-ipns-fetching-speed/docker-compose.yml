@@ -5,7 +5,7 @@ services:
     build:
       context: ./api
     ports:
-      - '3001:3001'
+      - '5000:5000'
     env_file:
       - .env
     networks:
@@ -13,7 +13,6 @@ services:
     depends_on: 
       - mariadb
       - ipfs
-      - front-end
 
   front-end:
     build:

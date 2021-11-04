@@ -8,6 +8,7 @@ import bodyParser from 'body-parser';
 import subplebbit from './routes/subplebbit.js';
 import post from './routes/post.js';
 import comment from './routes/comment.js';
+import gateway from './routes/gateway.js';
 import publishComments from './scripts/publishComments.js';
 import publishPosts from './scripts/publishPosts.js';
 
@@ -31,6 +32,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use('/subplebbit', subplebbit);
 app.use('/post', post);
 app.use('/comment', comment);
+app.use('/gateway', gateway);
 
 var server = app.listen(process.env.API_PORT, () => {
     console.log(`app listening at`, process.env.API_PORT);
