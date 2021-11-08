@@ -30,7 +30,7 @@ const comment = {
         await db.query(`INSERT INTO comments (CID, record, key_title) VALUES (?, ?, ?)`, [newCommentCid, post.data.latestComments, post.data.title]);
 
         console.log(newCommentCid);
-        res.json({ "CID": newCommentCid });
+        res.status(200).json({ "CID": newCommentCid });
     }
 }
 

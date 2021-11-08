@@ -33,7 +33,7 @@ const subplebbit = {
         await ipfs.name.publish('/ipfs/' + cid, { key: "Plebbit" });
 
         console.log(newSubplebbitCid);
-        res.json({ "CID": newSubplebbitCid });
+        res.status(200).json({ "CID": newSubplebbitCid });
     },
     getLatestSubplebbits: async (req, res) => {
         let amount = req.params.amount;
@@ -64,7 +64,7 @@ const subplebbit = {
         }
 
         console.log(result);
-        res.json(result);
+        res.status(200).json(result);
     },
     getSubplebbitByCID: async (req, res) => {
         const CID = req.params.CID;
@@ -84,7 +84,7 @@ const subplebbit = {
         }
 
         console.log({ "title": subplebbit.data.title, "posts": subplebbitPosts });
-        res.json({ "title": subplebbit.data.title, "posts": subplebbitPosts });
+        res.status(200).json({ "title": subplebbit.data.title, "posts": subplebbitPosts });
     }
 }
 

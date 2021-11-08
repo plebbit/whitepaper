@@ -47,7 +47,7 @@ const post = {
         await db.query(`INSERT INTO posts (CID, record, key_title) VALUES (?, ?, ?)`, [newPostCid, subplebbit.data.latestPosts, subplebbit.data.title]);
 
         console.log(newPostCid);
-        res.json({ "CID": newPostCid });
+        res.status(200).json({ "CID": newPostCid });
     },
     getPostByCid: async (req, res) => {
         const CID = req.params.CID;
@@ -68,7 +68,7 @@ const post = {
         postComments.push(latestPost.data);
 
         console.log({ "title": post.data.title, "content": post.data.content, "upvote": post.data.upvote, "comments": postComments });
-        res.json({ "title": post.data.title, "content": post.data.content, "upvote": post.data.upvote, "comments": postComments });
+        res.status(200).json({ "title": post.data.title, "content": post.data.content, "upvote": post.data.upvote, "comments": postComments });
     }
 }
 
