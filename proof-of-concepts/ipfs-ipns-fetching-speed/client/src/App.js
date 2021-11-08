@@ -6,18 +6,42 @@ import PQueue from 'p-queue';
 function App() {
   const [gateway, setGateway] = useState("https://cloudflare-ipfs.com");
 
-  async function test(CID) {
+  async function test(CID, index, startTime) {
     try {
         // retrieve the content of the IPFS subplebbit file
         const subplebbit = await axios.get(gateway + '/ipfs/' + CID);
 
         // retrieve the data from the IPNS file linked to the IPFS subplebbit file
         const subplebbitLatestPosts = await axios.get(gateway + '/ipns/' + subplebbit.data.latestPosts);
-        
+
         // retrieve the latest post data
+        let count = 1;
         let subplebbitPosts = [];
         for (const y of subplebbitLatestPosts.data.posts) {
             const post = axios.get(gateway + '/ipfs/' + y);
+            switch (count) {
+                default:
+                    break;
+                case 1:
+                    console.log("First post of " + index + "th received at " + (new Date().getTime() - startTime) + " ms");
+                    break;
+                case 5:
+                    console.log("Fifth post of " + index + "th received at " + (new Date().getTime() - startTime) + " ms");
+                    break;
+                case 10:
+                    console.log("Tenth post of " + index + "th received at " + (new Date().getTime() - startTime) + " ms");
+                    break;
+                case 20:
+                    console.log("Twentieth post of " + index + "th received at " + (new Date().getTime() - startTime) + " ms");
+                    break;
+                case 50:
+                    console.log("Fiftith post of " + index + "th received at " + (new Date().getTime() - startTime) + " ms");
+                    break;
+                case 100:
+                    console.log("Hundredth post of " + index + "th received at " + (new Date().getTime() - startTime) + " ms");
+                    break;
+            }
+            count += 1;
             subplebbitPosts.push(post);
         }
     
@@ -33,8 +57,7 @@ function App() {
     const startTime = new Date().getTime();
     let amount = 100;
     let result = [];
-    let count = 1;
-    const queue = new PQueue({concurrency: 5});
+    const queue = new PQueue({concurrency: 50});
 
     // Get the content of the IPFS containing the subplebbit's list
     const subplebbitList = await axios.get(gateway + '/ipns/k2k4r8l19q3ol24jpdpplgcopo7gofk0j7sw7scyvbyqd425a1vx074q');
@@ -42,28 +65,7 @@ function App() {
     // go through the array of subplebbits
     for (let i = 0; i < amount; ++i) {
         await queue.add(async () => {
-            const sub = await test(subplebbitList.data.subplebbits[i]);
-            console.log(sub);
-            switch (count) {
-                default:
-                    break;
-                case 1:
-                    console.log("First subplebbit received at " + (new Date().getTime() - startTime) + " ms");
-                    break;
-                case 5:
-                    console.log("Fifth subplebbit received at " + (new Date().getTime() - startTime) + " ms");
-                    break;
-                case 10:
-                    console.log("Tenth subplebbit received at " + (new Date().getTime() - startTime) + " ms");
-                    break;
-                case 20:
-                    console.log("Twentieth subplebbit received at " + (new Date().getTime() - startTime) + " ms");
-                    break;
-                case 50:
-                    console.log("Fiftith subplebbit received at " + (new Date().getTime() - startTime) + " ms");
-                    break;
-            }
-            count += 1;
+            const sub = await test(subplebbitList.data.subplebbits[i], i, startTime);
             result.push(sub);
         });
     }
@@ -80,6 +82,7 @@ function App() {
 
     // retrieve the content of the IPFS subplebbit file
     const subplebbit = await axios.get(gateway + '/ipfs/' + CID);
+    console.log("Contenant and title received at " + (new Date().getTime() - startTime) + " ms");
 
     // retrieve the data from the IPNS file linked to the IPFS subplebbit file
     const subplebbitLatestPosts = await axios.get(gateway + '/ipns/' + subplebbit.data.latestPosts);
@@ -127,6 +130,7 @@ function App() {
 
     // retrieve the content of the IPFS post file
     const post = await axios.get(gateway + '/ipfs/' + CID);
+    console.log("Contenant and title received at " + (new Date().getTime() - startTime) + " ms");
 
     // retrieve the data from the IPNS file linked to the IPFS post file
     const postLatestComments = await axios.get(gateway + '/ipns/' + post.data.latestComments);
