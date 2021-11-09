@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import PQueue from 'p-queue';
 
 function App() {
-  const [gateway, setGateway] = useState("https://ipfs.io");
+  const [gateway, setGateway] = useState("https://cloudflare-ipfs.com");
 
   async function Case1() {
     console.log("Case 1 started");
