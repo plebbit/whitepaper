@@ -1,0 +1,128 @@
+openapi: 3.0.0
+info:
+  title: Plebbit POC API
+  description: Plebbit's API to benchmark retrieve time of reddi's like app built on IPFS
+  version: 0.1.0
+servers:
+  - url: http://localhost:3000
+    description: Internal staging server for testing
+paths:
+  /subplebbit:
+    post:
+      parameters:
+        - name: title
+          required: true
+          description: title of the new subplebbit
+          schema:
+            type: string
+      summary: Create a new subplebbit.
+      description: Create a new subplebbit and store it to the main IPNS record.
+      responses:
+        '200':
+          description: CID of the newly created subplebbit
+          content:
+            application/json:
+              schema: 
+                type: object
+                  properties:
+                  CID:
+                    type: string
+                example:
+                  CID: Qmb2RyHNDJ27UAcgvPR31QhrXg9idbESQdG3ZtbndEiY6b
+
+  /subplebbit/latest/{amount}:
+    get:
+      parameters:
+        - in: path
+          name: amount
+          required: true
+          description: amount of subplebbits to get
+          schema:
+            type: integer
+      summary: Get lastest subplebbits.
+      description: Returns a list of the latest 100 posts of all the subplebbits.
+
+  /subplebbit/{CID}:
+    get:
+      parameters:
+        - in: path
+          name: CID
+          required: true
+          description: CID of the subplebbit
+          schema:
+            type: string
+      summary: Get a subplebbit by CID.
+      description: Returns a list of the latest 100 posts of a subplebbit.
+
+  /post:
+    post:
+      parameters:
+        - name: title
+          required: true
+          description: title of the new post
+          schema:
+            type: string
+        - name: content
+          required: true
+          description: content of the new post
+          schema:
+            type: string
+        - name: subplebbitCID
+          required: true
+          description: CID of the subplebbit linked to the post
+          schema:
+            type: string
+      summary: Create a new post.
+      description: Create a new post and store it to a IPNS record.
+      responses:
+        '200':
+          description: CID of the newly created post
+          content:
+            application/json:
+              schema: 
+                type: object
+                  properties:
+                  CID:
+                    type: string
+                example:
+                  CID: Qmb2RyHNDJ27UAcgvPR31QhrXg9idbESQdG3ZtbndEiY6b
+
+  /post/{CID}:
+    get:
+      parameters:
+        - in: path
+          name: CID
+          required: true
+          description: CID of the post
+          schema:
+            type: string
+      summary: Get a post by CID.
+      description: Returns a list of the latest comments of a post.
+
+  /comment:
+    post:
+      parameters:
+        - name: content
+          required: true
+          description: content of the new comment
+          schema:
+            type: string
+        - name: postCID
+          required: true
+          description: CID of the post linked to the comment
+          schema:
+            type: string
+      summary: Create a new comment.
+      description: Create a new comment and store it to a IPNS record.
+      responses:
+        '200':
+          description: CID of the newly created comment
+          content:
+            application/json:
+              schema: 
+                type: object
+                  properties:
+                  CID:
+                    type: string
+                example:
+                  CID: Qmb2RyHNDJ27UAcgvPR31QhrXg9idbESQdG3ZtbndEiY6b
