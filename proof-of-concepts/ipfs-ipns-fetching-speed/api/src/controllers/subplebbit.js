@@ -1,13 +1,13 @@
 import ipfs from '../config/ipfs.js';
 import axios from 'axios';
+import conf from "../config/subplebbitListName.js";
 
 const subplebbit = {
     createSubplebbit: async (req, res) => {
         const title = req.body.title;
 
         // Get the content of the IPFS containing the subplebbit's list
-        const subplebbitListName = 'k2k4r8m9xwpw5kczi1c21ewml8829axha149dckia8r5g4pnxknh6qdb';
-        const subplebbitList = await axios.get(process.env.IPFS_GATEWAY + 'ipns/' + subplebbitListName);
+        const subplebbitList = await axios.get(process.env.IPFS_GATEWAY + 'ipns/' + conf.subplebbitListName);
 
         // Generate a new IPNS record to store the posts of the subplebbit
         let { cid } = await ipfs.add(JSON.stringify(
@@ -33,14 +33,13 @@ const subplebbit = {
         await ipfs.name.publish('/ipfs/' + cid, { key: "Plebbit" });
 
         console.log(newSubplebbitCid);
-        res.json({ "CID": newSubplebbitCid });
+        res.status(200).json({ "CID": newSubplebbitCid });
     },
     getLatestSubplebbits: async (req, res) => {
         let amount = req.params.amount;
 
         // Get the content of the IPFS containing the subplebbit's list
-        const subplebbitListName = 'k2k4r8m9xwpw5kczi1c21ewml8829axha149dckia8r5g4pnxknh6qdb';
-        const subplebbitList = await axios.get(process.env.IPFS_GATEWAY + 'ipns/' + subplebbitListName);
+        const subplebbitList = await axios.get(process.env.IPFS_GATEWAY + 'ipns/' + conf.subplebbitListName);
 
         // update the maximum amount of subplebbits if it exceed that number
         amount = amount > subplebbitList.data.subplebbits.length ? subplebbitList.data.subplebbits.length : amount;
@@ -65,7 +64,7 @@ const subplebbit = {
         }
 
         console.log(result);
-        res.json(result);
+        res.status(200).json(result);
     },
     getSubplebbitByCID: async (req, res) => {
         const CID = req.params.CID;
@@ -85,7 +84,7 @@ const subplebbit = {
         }
 
         console.log({ "title": subplebbit.data.title, "posts": subplebbitPosts });
-        res.json({ "title": subplebbit.data.title, "posts": subplebbitPosts });
+        res.status(200).json({ "title": subplebbit.data.title, "posts": subplebbitPosts });
     }
 }
 

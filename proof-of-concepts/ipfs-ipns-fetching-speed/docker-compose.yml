@@ -1,18 +1,24 @@
 version: "3"
 
 services:
-  node:
-    build: .
+  api:
+    build:
+      context: ./api
     ports:
-      - '3000:3000'
+      - '5000:5000'
     env_file:
       - .env
-    environment: 
-      MYSQL_HOST: mariadb
     networks:
       - docker-service
     depends_on: 
       - mariadb
+      - ipfs
+
+  front-end:
+    build:
+      context: ./client
+    ports:
+      - '80:3000'
 
   mariadb:
     image: mariadb
@@ -25,7 +31,7 @@ services:
     volumes:
       - maria-data:/data/db
       - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
-  
+
   ipfs:
     image: ipfs/go-ipfs
     ports:
