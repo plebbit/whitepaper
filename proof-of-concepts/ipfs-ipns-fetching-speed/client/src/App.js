@@ -4,57 +4,15 @@ import React, { useState } from 'react';
 import PQueue from 'p-queue';
 
 function App() {
-  const [gateway, setGateway] = useState("https://cloudflare-ipfs.com");
-
-  async function test(CID, index, startTime) {
-        // retrieve the content of the IPFS subplebbit file
-        const subplebbit = await axios.get(gateway + '/ipfs/' + CID);
-
-        // retrieve the data from the IPNS file linked to the IPFS subplebbit file
-        const subplebbitLatestPosts = await axios.get(gateway + '/ipns/' + subplebbit.data.latestPosts);
-        console.log("IPNS of " + (index + 1) + "th subplebbit received at " + (new Date().getTime() - startTime) + " ms");
-
-        // retrieve the latest post data
-        let count = 1;
-        let subplebbitPosts = [];
-        for (const y of subplebbitLatestPosts.data.posts) {
-            const post = axios.get(gateway + '/ipfs/' + y);
-            switch (count) {
-                default:
-                    break;
-                case 1:
-                    console.log("First post of " + (index + 1) + "th received at " + (new Date().getTime() - startTime) + " ms");
-                    break;
-                case 5:
-                    console.log("Fifth post of " + (index + 1) + "th received at " + (new Date().getTime() - startTime) + " ms");
-                    break;
-                case 10:
-                    console.log("Tenth post of " + (index + 1) + "th received at " + (new Date().getTime() - startTime) + " ms");
-                    break;
-                case 20:
-                    console.log("Twentieth post of " + (index + 1) + "th received at " + (new Date().getTime() - startTime) + " ms");
-                    break;
-                case 50:
-                    console.log("Fiftith post of " + (index + 1) + "th received at " + (new Date().getTime() - startTime) + " ms");
-                    break;
-                case 100:
-                    console.log("Hundredth post of " + (index + 1) + "th received at " + (new Date().getTime() - startTime) + " ms");
-                    break;
-            }
-            count += 1;
-            subplebbitPosts.push(post);
-        }
-    
-        subplebbitPosts = await Promise.all(subplebbitPosts);
-        return ({title: subplebbit.data.title, posts: subplebbitPosts});
-}
+  const [gateway, setGateway] = useState("https://ipfs.io");
 
   async function Case1() {
     console.log("Case 1 started");
     const startTime = new Date().getTime();
-    let amount = 100;
-    let result = [];
+    let amount = 10;
+    let result = [{title: "title", posts: []}, {title: "title", posts: []}, {title: "title", posts: []}, {title: "title", posts: []}, {title: "title", posts: []}, {title: "title", posts: []}, {title: "title", posts: []}, {title: "title", posts: []}, {title: "title", posts: []}, {title: "title", posts: []}];
     const queue = new PQueue({concurrency: 10});
+    const postQueue = new PQueue({concurrency: 100});
 
     // Get the content of the IPFS containing the subplebbit's list
     const subplebbitList = await axios.get(gateway + '/ipns/k2k4r8l19q3ol24jpdpplgcopo7gofk0j7sw7scyvbyqd425a1vx074q');
@@ -62,11 +20,25 @@ function App() {
     // go through the array of subplebbits
     for (let i = 0; i < amount; ++i) {
         queue.add(async () => {
-            const sub = await test(subplebbitList.data.subplebbits[i], i, startTime);
-            result.push(sub);
+            const subplebbit = await axios.get(gateway + '/ipfs/' + subplebbitList.data.subplebbits[i]);
+            const subplebbitLatestPosts = await axios.get(gateway + '/ipns/' + subplebbit.data.latestPosts);
+
+            console.log((i + 1) + "th IPNS record loaded at " + (new Date().getTime() - startTime) + " ms");
+            result[i].title = subplebbit.data.title;
+            for (const postCID of subplebbitLatestPosts.data.posts.splice(0, 10)) {
+                postQueue.add(async () => {
+                    const post = await axios.get(gateway + '/ipfs/' + postCID);
+
+                    if (result[i].posts.length === 0 || result[i].posts.length === 9)
+                        console.log((result[i].posts.length + 1) + "th post of " + (i + 1) + "th subplebbit loaded at " + (new Date().getTime() - startTime) + " ms");
+                    result[i].posts.push(post.data);
+                });
+            }
         });
     }
+
     await queue.onIdle();
+    await postQueue.onIdle();
 
     console.log(result);
     console.log("Case 1 ended and took " + (new Date().getTime() - startTime) + " ms");
