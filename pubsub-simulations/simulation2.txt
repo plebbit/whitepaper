@@ -1,0 +1,106 @@
+friendlyNode1 stats (the attacked node)
+---------------------------------------
+node name request challen answer  validat incompl complete
+ownerNode 250 250 200 200 50  200
+friendlyNode2 250 250 200 200 50  200
+spammerNode 141 131 85  84  50  96
+friendlyNode3 250 250 200 200 50  200
+friendlyNode4 250 250 200 200 50  200
+first seen
+ownerNode 28  224 26  169 0 178
+friendlyNode2 110 10  107 10  0 142
+spammerNode 59  0 11  0 50  19
+friendlyNode3 36  9 25  11  0 63
+friendlyNode4 17  7 31  10  0 53
+
+friendlyNode2 stats (regular node)
+----------------------------------
+node name request challen answer  validat incompl complete
+friendlyNode1 250 250 200 200 50  200
+ownerNode 250 250 200 200 50  200
+friendlyNode3 250 250 200 200 50  200
+friendlyNode4 250 250 200 200 50  200
+first seen
+friendlyNode1 160 9 108 11  46  148
+ownerNode 33  225 36  177 2 184
+friendlyNode3 31  6 30  2 0 56
+friendlyNode4 26  10  26  10  2 51
+
+friendlyNode3 stats (regular node)
+----------------------------------
+node name request challen answer  validat incompl complete
+friendlyNode1 250 250 200 200 50  200
+friendlyNode2 250 250 200 200 50  200
+ownerNode 250 250 200 200 50  200
+friendlyNode4 250 250 200 200 50  200
+first seen
+friendlyNode1 141 11  93  9 44  113
+friendlyNode2 92  10  85  11  3 107
+ownerNode 12  223 11  169 2 170
+friendlyNode4 5 6 11  11  1 23
+
+friendlyNode4 stats (regular node)
+----------------------------------
+node name request challen answer  validat incompl complete
+friendlyNode1 250 250 200 200 50  200
+ownerNode 250 250 200 200 50  200
+friendlyNode2 250 250 200 200 50  200
+friendlyNode3 250 250 200 200 50  200
+first seen
+friendlyNode1 139 6 95  5 43  112
+ownerNode 9 229 8 177 4 177
+friendlyNode2 94  8 91  15  1 114
+friendlyNode3 8 7 6 3 2 15
+friendlyNode1 stats (the attacked node)
+---------------------------------------
+node name request challen answer  validat incompl complete
+ownerNode 250 250 200 200 50  200
+friendlyNode2 250 250 200 200 50  200
+spammerNode 141 131 85  84  50  96
+friendlyNode3 250 250 200 200 50  200
+friendlyNode4 250 250 200 200 50  200
+first seen
+ownerNode 28  224 26  169 0 178
+friendlyNode2 110 10  107 10  0 142
+spammerNode 59  0 11  0 50  19
+friendlyNode3 36  9 25  11  0 63
+friendlyNode4 17  7 31  10  0 53
+
+friendlyNode2 stats (regular node)
+----------------------------------
+node name request challen answer  validat incompl complete
+friendlyNode1 250 250 200 200 50  200
+ownerNode 250 250 200 200 50  200
+friendlyNode3 250 250 200 200 50  200
+friendlyNode4 250 250 200 200 50  200
+first seen
+friendlyNode1 160 9 108 11  46  148
+ownerNode 33  225 36  177 2 184
+friendlyNode3 31  6 30  2 0 56
+friendlyNode4 26  10  26  10  2 51
+
+friendlyNode3 stats (regular node)
+----------------------------------
+node name request challen answer  validat incompl complete
+friendlyNode1 250 250 200 200 50  200
+friendlyNode2 250 250 200 200 50  200
+ownerNode 250 250 200 200 50  200
+friendlyNode4 250 250 200 200 50  200
+first seen
+friendlyNode1 141 11  93  9 44  113
+friendlyNode2 92  10  85  11  3 107
+ownerNode 12  223 11  169 2 170
+friendlyNode4 5 6 11  11  1 23
+
+friendlyNode4 stats (regular node)
+----------------------------------
+node name request challen answer  validat incompl complete
+friendlyNode1 250 250 200 200 50  200
+ownerNode 250 250 200 200 50  200
+friendlyNode2 250 250 200 200 50  200
+friendlyNode3 250 250 200 200 50  200
+first seen
+friendlyNode1 139 6 95  5 43  112
+ownerNode 9 229 8 177 4 177
+friendlyNode2 94  8 91  15  1 114
+friendlyNode3 8 7 6 3 2 15
