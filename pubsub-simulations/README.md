@@ -2,6 +2,7 @@ By looking at statistics from all messages received, no correlation with the spa
 
 In simulation1 we demonstrate that there is a strong correlation between first seen messages coming from a spammer, and 0 correlation between non-first seen messages.
 
+```
 friendlyNode1 stats (the attacked node)
 ---------------------------------------
 node name request challen answer  validat incompl complete
@@ -29,9 +30,11 @@ ownerNode 6 96  2 17  4 17
 friendlyNode1 89  6 13  1 78  15
 friendlyNode4 12  5 1 1 7 6
 friendlyNode3 3 3 4 1 1 6
+```
 
 In simulation2 we demonstrate that we can block peers eventually out of the network.
 
+```
 friendlyNode1 stats (the attacked node)
 ---------------------------------------
 node name request challen answer  validat incompl complete
@@ -59,5 +62,6 @@ friendlyNode1 160 9 108 11  46  148
 ownerNode 33  225 36  177 2 184
 friendlyNode3 31  6 30  2 0 56
 friendlyNode4 26  10  26  10  2 51
+```
 
 To display the stats, wait until all the logs are finished printing and press "s".
