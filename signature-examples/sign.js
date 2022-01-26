@@ -12,6 +12,7 @@ const cryptoSign = util.promisify(crypto.sign)
 const cryptoVerify = util.promisify(crypto.verify)
 const ipns = require('ipns')
 const libp2pCrypto = require('libp2p-crypto')
+const PeerId = require('peer-id')
 const ethers = require('ethers')
 
 ;(async () => {
@@ -44,9 +45,12 @@ const ipnsRecord = await ipns.create(
   ipnsRecordOptions.sequenceNumber, 
   ipnsRecordOptions.lifetime
 )
-console.log(ipnsRecord)
 const ipnsRecordWithEmbedPublicKey = await ipns.embedPublicKey(rsaInstancePublicKey, ipnsRecord)
-await ipns.validate(rsaInstancePublicKey, ipnsRecordWithEmbedPublicKey)
+const ipnsName = (await PeerId.createFromPubKey(libp2pCrypto.keys.marshalPublicKey(rsaInstancePublicKey))).toB58String()
+const ipnsNamePeerIdInstance = await PeerId.createFromB58String(ipnsName)
+const publicKeyFromRecord = await ipns.extractPublicKey(ipnsNamePeerIdInstance, ipnsRecordWithEmbedPublicKey)
+console.log({ipnsRecordWithEmbedPublicKey, ipnsName, ipnsNamePeerIdInstance, publicKeyFromRecord})
+await ipns.validate(publicKeyFromRecord, ipnsRecordWithEmbedPublicKey)
 
 // EXAMPLE 4: generate a key pair with node from private key pem
 
@@ -60,13 +64,17 @@ console.log({privateKey: nodePrivateKeyFromPrivateKeyPem.export({type: 'pkcs1', 
 
 const encryptedPemPassword = ''
 const rsaInstancePrivateKeyFromPrivateKeyPem = await libp2pCrypto.keys.import(privateKeyPem, encryptedPemPassword)
-console.log(rsaInstancePrivateKeyFromPrivateKeyPem)
+const ipnsNameFromPrivateKeyPem = (await PeerId.createFromPrivKey(libp2pCrypto.keys.marshalPrivateKey(rsaInstancePrivateKeyFromPrivateKeyPem, 'RSA'))).toB58String()
+const ipnsMarshalledPublicKey = libp2pCrypto.keys.marshalPublicKey(rsaInstancePrivateKeyFromPrivateKeyPem.public, 'RSA')
+const peerIdInstanceFromPublicKey = await PeerId.createFromPubKey(ipnsMarshalledPublicKey)
+const rsaInstancePublicKeyFromPrivateKeyPem = peerIdInstanceFromPublicKey.pubKey
+console.log({peerIdInstanceFromPublicKey, ipnsNameFromPrivateKeyPem, ipnsMarshalledPublicKey, rsaInstancePublicKeyFromPrivateKeyPem})
 
 // EXAMPLE 6: sign the same data from node and rsa instance
 
 const messageToSign = 'hello'
 const rsaInstanceSignature = await rsaInstancePrivateKeyFromPrivateKeyPem.sign(messageToSign)
-const rsaInstanceSignatureVerification = await rsaInstancePrivateKeyFromPrivateKeyPem.public.verify(messageToSign, rsaInstanceSignature)
+const rsaInstanceSignatureVerification = await rsaInstancePublicKeyFromPrivateKeyPem.verify(messageToSign, rsaInstanceSignature)
 const nodeKeyPairSignature = await cryptoSign('sha256', Buffer.from(messageToSign), nodePrivateKeyFromPrivateKeyPem)
 const nodeKeyPairSignatureVerification = await cryptoVerify('sha256', Buffer.from(messageToSign), nodePublicKeyFromPrivateKeyPem, nodeKeyPairSignature)
 console.log({rsaInstanceSignature: rsaInstanceSignature.toString('base64'), nodeKeyPairSignature: nodeKeyPairSignature.toString('base64'), nodeKeyPairSignatureVerification, rsaInstanceSignatureVerification})
