@@ -11,6 +11,7 @@
   "dependencies": {
     "ethers": "^5.5.3",
     "ipns": "^0.16.0",
-    "libp2p-crypto": "0.21.2"
+    "libp2p-crypto": "0.21.2",
+    "peer-id": "^0.16.0"
   }
 }
