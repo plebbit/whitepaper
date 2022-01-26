@@ -8,4 +8,4 @@ Plebbit is a serverless, adminless, decentralized Reddit alternative that has no
 - Telegram: https://t.me/plebbit
 - Twitter: https://twitter.com/getplebbit
 
-test
+test 2
