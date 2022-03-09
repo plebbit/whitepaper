@@ -6,4 +6,5 @@ Plebbit is a serverless, adminless, decentralized Reddit alternative that has no
 - IPFS thread: https://discuss.ipfs.io/t/12158
 - ETHResearch thread: https://ethresear.ch/t/10523
 - Telegram: https://t.me/plebbit
+- Discord: https://discord.gg/E7ejphwzGW
 - Twitter: https://twitter.com/getplebbit
