@@ -142,3 +142,20 @@ ipfs is like bittorrent, the people who care about X content seed X content, if 
 some parts are novel and not basic IPFS, like the captchas over p2p pubsub, but hopefully this spam resistance strategy is so good that other protocols like ipfs, waku, matrix, etc start using it
 
 I've posted the idea on IPFS forums, waku forums, matrix chat, ETHresearch and no one has been able to prove that it can't work so I think it will
+
+#### Q: Cloudflare has a history of censorship. It also acts in way like a single throttlepoint on most of the internet. Has this been considered and have alternative solutions been investigated?
+A: at the moment plebbit uses cloudflare-ipfs.com for its default ipfs gateway (users in the browsers have to use gateways, can't be a p2p peer).
+
+eventually there will be more ipfs gateways not operated by cloudflare as ipfs gets more mainstream. I also plan on making a script to run a plebbit friendly ipfs gateway, that would only serve and cache plebbit content, plebs can volunteer to run them and we can have a large list of gateways for redundancy.
+
+the goal of plebbit is to use gateways similarly to bittorrent trackers, the clients usually have around 20 trackers by default, so the plebbit client will try all of them to try to find your content, also you can easily add a gateway by going to the settings page, like changing the RPC url on metamask.
+
+there can also be private or paid gateways, like you could run your gateway from home or a vps, then connect to it while you're browsing on your phone, and youre guaranteed not to be censored since you own the gateway. this also wont waste your battery/cellular data doing p2p stuff on your phone, the server does the p2p super fast since it's a server, and sends you the final data you wanted after.
+
+also ipfs is working on ways to do p2p in the browser, with webrtc and web transport, eventually we will implement this in plebbit as well, which will add even more redundancies if literally all your dozens of gateways refuse to serve your content, you can use relays and signaling servers to connect you with p2p peers. it's pretty hard for these relays/signaling servers to censor you since they don't know what data you're transferring with other peers since it's e2e encrypted. With relays it's even less likely to be censored, since the relays are volunteers running ipfs nodes, there's thousands of them running ipfs on default settings, none of them care about censoring you, not sure they even technically could since it's e2e encrypted.
+
+also eventually, you'll be able to run p2p stuff using the mobile app, ipfs is doing research on mobile optimized clients, so you'll be able to be a full node on literally any device (except IOS of course since they are an evil company that wont let you install software outside their app store). if you're a full node on mobile, you're not relying on any gateways or cloudflare, no one can stop you from reaching some content.
+
+if you use the desktop version, you're always a full node, you never use a gateway or cloudflare
+
+the end goal is to have all these redundancies in place in all clients, and automatically choose which method is best for fetching content depending if you're on wifi, cellular, charging, mobile, browser, etc. all this stuff is being worked on by the ipfs team and random other projects, we dont have to spend any time implementing any of this, other people are working on it in the meantime we improve the plebbit clients in other ways.
