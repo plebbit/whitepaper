@@ -159,3 +159,18 @@ also eventually, you'll be able to run p2p stuff using the mobile app, ipfs is d
 if you use the desktop version, you're always a full node, you never use a gateway or cloudflare
 
 the end goal is to have all these redundancies in place in all clients, and automatically choose which method is best for fetching content depending if you're on wifi, cellular, charging, mobile, browser, etc. all this stuff is being worked on by the ipfs team and random other projects, we dont have to spend any time implementing any of this, other people are working on it in the meantime we improve the plebbit clients in other ways.
+
+#### Q: I'm of the opinion that with enough blockchain scaling, we just store all the data on chain.
+A: If all Reddit data was on chain, the chain would be petabytes. The average user would have to query the chain via very few RPCs that can afford to host petabytes. Those RPCs would censor them and the content would not be accessible.
+
+Also if there's a blockchain, the user must pay to post, even if it's 1/1000 of a cent, it is a hurdle for the average person who doesn't know how to operate a crypto wallet.
+
+In our design, running a full node can be done on a phone and requires no storage, even with billion of users, so there can't be RPC censorship, and publishing is free (the sub owner decides the challenge, it can be a captcha, reputation, password, or token/fee based).
+
+We can achieve this because the data is not stored in a ledger, each sub is an IPFS file. Which means if a user wants to read a sub, all they do is download an IPFS file, they don't need to ask a centralized RPC endpoint for the latest state of a petabytes blockchain. It can scale to billions of users, and no single user needs to store petabytes. It is exactly like bittorrent and ipfs, it can have infinite users.
+
+The downside is that there is no ledger, no consensus, no proof of time. You can sign a publication with a date from 20 years ago, and publish it in your own sub, and it's valid. You can also delete your sub, and if no one else has a copy, it disappears, like a torrent.
+
+The upside is that it scales to billions of users, there are no transaction fees, and there are no RPCs that can censor you, it is exactly like bittorrent. It is much more censorship resistant than a blockchain based social media.
+
+For human readable names, a ledger will always be needed, because you need proof of who is the latest owner of a name, so we use ENS, but human readable names are optional, our design also work with public keys as names.
