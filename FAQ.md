@@ -181,3 +181,10 @@ A: There is no incentive, it is like bittorrent, users seed content while they a
 A community is a private key pair, or an ENS name. The owner of the key pair or name has complete control, including shutting it down. There's no way to seize it from him, bully him into curating his content a certain way, block his community, etc.
 
 If your community is an ENS name, whoever owns the name controls the community, so it is possible for a DAO to own a name/community, and to vote on chain to assign someone to run the sub node for the community. The previous assignee would have no way to keep control of the community, since all users who resolve the ENS name would be directed to the new assignee's node.
+
+#### Q: Will either Plebchan or Plebbit feature LaTeX for math specific subs? Can the plebbit protocol be used for a stackexchange type of forum?
+A: plebbit is a JSON protocol over IPFS. the content is stored in comment.content, which a UTF8 string (ie JSON). So it can store anything, HTML, markdown, latex, etc.
+
+The plebbit-react client will support basic markdown, so will the plebchan client. It is likely that both those clients will never support latex or html. But it is possible to have another client that supports latex or html or any other markup language.
+
+The plebbit protocol is specifically made for community based apps like stackexchange, so yes you can make a stackexchange clone with plebbit, and it can have latex support, (but the latex wont show in plebchan and plebbit UI). It is on the roadmap https://github.com/plebbit/roadmap
