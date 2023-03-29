@@ -174,3 +174,10 @@ The downside is that there is no ledger, no consensus, no proof of time. You can
 The upside is that it scales to billions of users, there are no transaction fees, and there are no RPCs that can censor you, it is exactly like bittorrent. It is much more censorship resistant than a blockchain based social media.
 
 For human readable names, a ledger will always be needed, because you need proof of who is the latest owner of a name, so we use ENS, but human readable names are optional, our design also work with public keys as names.
+
+#### Q: What is the incentive to maintain liveliness of a sub if the owner decides to take down their IPFS node? Does anyone else become the new sub owner/node operator? Another angle: if the sub owner suddenly shuts down their node (decides to stop, internet outage, dies), is there a mechanism to autonomously transfer ownership of that responsibility?
+A: There is no incentive, it is like bittorrent, users seed content while they are downloading it, because they are altruistic, or because it is their own content that they want to share. Sub owners are incentivized to keep their own communities online, so they keep their node online. If they shut down the community, it is gone, no one can take it over. There could be ways to sell/transfer a community to someone, but there's no spec for it yet, but it is on the roadmap.
+
+A community is a private key pair, or an ENS name. The owner of the key pair or name has complete control, including shutting it down. There's no way to seize it from him, bully him into curating his content a certain way, block his community, etc.
+
+If your community is an ENS name, whoever owns the name controls the community, so it is possible for a DAO to own a name/community, and to vote on chain to assign someone to run the sub node for the community. The previous assignee would have no way to keep control of the community, since all users who resolve the ENS name would be directed to the new assignee's node.
