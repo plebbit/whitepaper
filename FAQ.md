@@ -195,3 +195,14 @@ A: plebbit is completely open source, there is no secret backend services or cor
 and since the plebbit protocol is also completely open, if you fork and create a new client, you dont lose any network effect. also if people dont like a new version of a client, they can keep using the old one forever, for example people still use utorrent versions from a decade ago from before they added ads and spyware to it, and it still works perfectly.
 
 so open source client + open p2p protocol actually protects the user from any corruption of leadership. unlike reddit that had an open source client, and made it closed source, and there was nothing we could do about it, because the protocol wasnt open. any forks didnt have the network effect. and twitter was the inverse, the client was closed source, but they used RSS which was an open protocol. but since the client was closed, they just slowly added more closed features to Twitter, and when they had stolen enough users from RSS, they just removed RSS and killed it. Plebbit doesn't have any closed features, and when we start adding some, it's time to move clients, the mission has been corrupted.
+
+#### Q: In your opinion, won't "complete freedom" meaning no censorship in the network lead to chaos?
+A: it works exactly like reddit, someone creates a community, he is the owner, he sets rules and assigns mods for his community. comments against his rules get deleted by the mods.
+
+the only difference is that since it's P2P, there are no global admins like on reddit that can delete a community, communities are undeletable. it also means that there are no admins that can ban you from the entire site, or no admins that can threaten to delete your community if you dont comply with their arbitrary rules. your community is yours and unseizable, unbulliable.
+
+so I dont think it will be chaos at all, I think it will be exactly like reddit, except it will be fair, since there are no top down orders to delete/bully community owners.
+
+each good community will have to censor a lot, because otherwise people will spam or post off topic things. so it wont be chaos, each user can choose what community they want, if a community has bad mods, they can use another one. unlike reddit where there are countless topics that will get your community banned, or your account sitewide banned.
+
+since it's P2P, it's also not possible for ISPs/governments to prevent you from accessing the app, or any community of your choice. Like for example governments threatening to ban twitter, telegram, etc if they dont censor cant happen on plebbit since it's all P2P.
