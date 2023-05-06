@@ -206,3 +206,21 @@ so I dont think it will be chaos at all, I think it will be exactly like reddit,
 each good community will have to censor a lot, because otherwise people will spam or post off topic things. so it wont be chaos, each user can choose what community they want, if a community has bad mods, they can use another one. unlike reddit where there are countless topics that will get your community banned, or your account sitewide banned.
 
 since it's P2P, it's also not possible for ISPs/governments to prevent you from accessing the app, or any community of your choice. Like for example governments threatening to ban twitter, telegram, etc if they dont censor cant happen on plebbit since it's all P2P.
+
+#### Q: IPFS seems lack of incentive to encourage nodes to store data. So, how to guarantee that you reddits data can still be accessed after some time?
+A: The community owner must run an IPFS node and our software 24/7. He must keep the entire community data on his device and seed it 24/7. His incentive is that if he doesn't do that, his community doesn't work. Other users seed the IPFS data they consume temporarily because that's how IPFS works by default.
+
+Running an IPFS node and our software is easy, it's just an electron app bundled with ipfs that you double click. You just have to leave it open. There's also a CLI app that you can install with 1 command.
+
+#### Q: DHT is slow to query code data or even can not found. How do you avoid that happen?
+A: In my experience with IPFS, DHT is very fast, getting a CID only takes a few seconds when it's a small JSON file. Sometimes it's even less than 1 seconds if your node already knows the peers. You can try our desktop demo version and see how fast it is, it uses a real IPFS node and is fully P2P.
+
+For the web version, we use multiple IPFS gateways concurrently. Currently we use 3, ipfs.io, cloudflare-ipfs and our own gateway. Our own gateway precaches all the popular data in the app, so it loads instantly. Ipfs.io also usually caches our data and loads fast once it is cached. Cloudflare-ipfs.com is usually pretty slow but it's usually always online.
+
+Our goal is to eventually have 20+ gateways so that even the web version that doesn't use direct P2P cannot be censored. You can also add your own gateways or IPFS API endpoint in the settings.
+
+Another goal of the web and mobile version is to use web transport to do some of the P2P in the browser.
+
+Our app also uses a lot more caching and preloading the background than a regular web2 app, to improve UX.
+
+Our app also uses IPNS, which is very slow, can take several minutes to fetch, and it can't be cached. But for this we use IPNS over pubsub experimental feature, which makes fetching the IPNS almost instant. The gateways also cache the IPNS for a few minutes, so in the web version you usually get an instant response, but it is a few minutes old.
