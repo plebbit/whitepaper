@@ -223,4 +223,13 @@ Another goal of the web and mobile version is to use web transport to do some of
 
 Our app also uses a lot more caching and preloading the background than a regular web2 app, to improve UX.
 
-Our app also uses IPNS, which is very slow, can take several minutes to fetch, and it can't be cached. But for this we use IPNS over pubsub experimental feature, which makes fetching the IPNS almost instant. The gateways also cache the IPNS for a few minutes, so in the web version you usually get an instant response, but it is a few minutes old.
+#### Q: Does DHT can only quickly access hot data? And does the community owner need to publish the data once a day to keep it hot?
+A: DHT can access any data, 99% of the time it takes less than 1 minute, 90% of the time it takes less than a few seconds in my experience. I don't know the internals of IPFS or exact stats, all I know is it works well in practice and doesn't impact UX much in plebbit, it is fast enough that it seems like a regular centralized app, but it's not, it's pure P2P.
+
+The community owner must run a node and publish new data every X minutes because we have mutable data. The community is an IPNS record which is mutable and updated every X minutes. But this IPNS happens over pubsub so it's instant instead of taking a few minutes to fetch. In web client, the IPFS gateway usually caches it so it's also instant to fetch, but it's usually XX minutes stale, which has its downside, you usually can't see comments newer than a few minutes in the web version.
+
+The community IPNS is a JSON file that links to new CIDs for post pages and comment updates. The only permanent CIDs are for immutable comment data, like title, timestamp, author, etc. We have ephemeral CIDs for pages and comment mutable data (replies, votes, edits, etc).
+
+For more info you can check the whitepaper https://github.com/plebbit/whitepaper/discussions/2 and also the upcoming design change for the mutable comment data https://github.com/plebbit/plebbit-js/issues/12
+
+If you're skeptical about the speed, you can try demos right now, they already have content, people are already using it, and it's already fully P2P, there are no centralized training wheels. The web version uses IPFS gateways but the user can add their own and there can be an unlimited amount so it's sufficiently censorship resistant. The desktop version bundles an IPFS node and is fully P2P.
