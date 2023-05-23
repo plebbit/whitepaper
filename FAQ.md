@@ -4,8 +4,8 @@
 
 #### Q: What are the tokenomics?
 A: 100% of the supply will be airdropped in 6 days, around 1 trillion tokens. No presale or team allocation, 100% airdrop. More tokens will be minted during later airdrops and liquidity farming but that will be in several months and only to bring more eyes to the project.
-#### Q: Is this running on Avax?
-A: the token is on AVAX, the plebbit protocol itself it not a blockchain, but the app will use several blockchains, tokens and NFTs to recreate all the features from reddit, like usernames, subplebbit names will be crypto domains like ENS (and other chains), awards will be NFTs, tips and upvotes will earn tokens (can set them to your own token or any coin of your choice in your subplebbit)
+#### Q: Is this running on ETH?
+A: the token is on ETH, the plebbit protocol itself it not a blockchain, but the app will use several blockchains, tokens and NFTs to recreate all the features from reddit, like usernames, subplebbit names will be crypto domains like ENS (and other chains), awards will be NFTs, tips and upvotes will earn tokens (can set them to your own token or any coin of your choice in your subplebbit)
 #### Q: Can I say based things on Plebbit?
 A: you can say the basest of things
 
@@ -60,19 +60,13 @@ A: Federated protocols are not as decentralized and censorship resistant as pure
 
 Pure peer-to-peer like Plebbit is more scalable, it doesn't require DNS, public HTTP endpoints, servers, admins, moderators, lawyers, etc. You own your identity and communities without having to run a server, it's just a public key pair. It could scale to 1 billion users with just a few anonymous developers working on the client, without any server infrastructure. It's also much harder to "embrace, extend, extinguish".
 
-#### Q: Why would I want to read whitepaper or github? Why do you think that is a good idea for the reddit user to read whitepaper or github code of an alternative to reddit you want mentioned user to attract to? That just doesn't make sense. We already have decentralised reddit. I think it is Memo.cash. I don't use it and it is not on avax but same principle.
+#### Q: Why would I want to read whitepaper or github? Why do you think that is a good idea for the reddit user to read whitepaper or github code of an alternative to reddit you want mentioned user to attract to? That just doesn't make sense. We already have decentralised reddit. I think it is Memo.cash. I don't use it and it is not on ETH but same principle.
 
 A: Storing data on a blockchain/ledger like Memo.cash appears to be doing is in my opinion a design mistake for a social media. It requires that each user pay a form of transaction fee in order to post, even on blockchains with no fees like EOS, you still have to stake, so it still has an opportunity/effort cost, it still requires the user to acquire crypto and a crypto wallet. Even if that cost was 1c, the effort of entry would turn off most people (as of now). Also, blockchains have physical throughput limits, they cannot scale to billions of users posting KBs of text daily.
 
 For decentralized social media, you don't need a blockchain or ledger. A blockchain/ledger does 2 things, it allows everyone to know the order of things published, and to access everything published since the beginning of time, for eternity. Both those things are not crucial for social media. 99.99% of the time you're on social media, you only care about new content, and you don't care to know which content was published first. Perfectly available order and history has a huge cost: transaction fees and physical throughput limits.
 
 Plebbit doesn't use a ledger or blockchain for storing/delivering content. It is very similar to bittorrent/ipfs. In bittorrent, each file is an address, based on its content. In plebbit, each subplebbit is an address, based on its public key. Each subplebbit creates its own p2p swarm, like each bittorrent file creates its own p2p swarm. Like bittorrent, it can scale to billions of users, and it has no transaction fees to post. To achieve this, it makes the sacrifice of not having a ledger, you cannot know the real order of posts, and there's no certainty you'll be able to access old content, but since those 2 things are not crucial to social media, it's a perfect trade off.
-
-#### Q: What type of rewards are we likely to see early on for liquidity mining? And are there risks associated with this?
-
-A: Rewards will be highest on first day, and then gradually go down over 2 months. If not many people participate, they will be very high, could be as high as 1 million % APY, if too many people participate it will be lower.
-
-The risks are that you must add liquidity to the PLEB/AVAX pool on Trader Joe, which means that you no longer have exposure to the price of PLEB, if the price of PLEB goes up 10x, your PLEB/AVAX value stays the same. But also if the price of PLEB goes down 10x, your value also stays the same, except your rewards, those are guaranteed profit.
 
 #### Node usage:
 I believe many subplebbit will implement the spam protection that you must have XX karma from a list of popular subplebbits to post, kind of like reddit does with automod already. some subplebbit will be very profitable to spam, so captchas alone wont deter spammers. Only the owner's public key (or the keys he delegates to) can publish messages, other nodes are just relay nodes, they can't publish anything. You could also hide your owner node behind tor to prevent getting DDOSed.
