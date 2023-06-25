@@ -227,3 +227,45 @@ The community IPNS is a JSON file that links to new CIDs for post pages and comm
 For more info you can check the whitepaper https://github.com/plebbit/whitepaper/discussions/2 and also the upcoming design change for the mutable comment data https://github.com/plebbit/plebbit-js/issues/12
 
 If you're skeptical about the speed, you can try demos right now, they already have content, people are already using it, and it's already fully P2P, there are no centralized training wheels. The web version uses IPFS gateways but the user can add their own and there can be an unlimited amount so it's sufficiently censorship resistant. The desktop version bundles an IPFS node and is fully P2P.
+
+#### Q: How is it different from Aether?
+A: I haven't studied how Aether works, but they have no mechanism for sybil resistance, so it's technically impossible for it to be fully P2P. They have no whitepaper that explains how they deal with sybil resistance. Some people that used it claim it's centralized, which would explain how they deal with sybil attacks, there's a centralized actor that can ban people. For example a comment on reddit said:
+
+https://old.reddit.com/r/RedditAlternatives/comments/143pw2a/aether_an_open_source_p2p_community_board_with/jnbcf3a/
+
+```
+Aether is not quite the same p2p a lot of people are asking for.
+
+i installed it back when it was released. the developer maintains control over it, much like a admin of a website. he has privileges on the network no one else has. i realized this when it was discovered Aether had a feature to block nsfw content.
+
+who decides whats nsfw? he does, of course!
+
+when confronted, it was promised this was just "for now", and """eventually''"", hed put some community people in charge of it (no idea if he ever did). why would he even be the one to decide? why does anyone? (any way to prove those accounts he "surrenders" those privileges to arent his own alts?)
+
+is a full nude pic nsfw? we can probably all agree.
+
+topless? we can probably all still agree.
+
+micro bikini? some of us might not agree.
+
+regular bikini? some more might not agree.
+
+elegant hollywood dinner dress showing a sliver of sideboob? discussion time.
+
+tank top showing the same amount of sideboob...still discussing.
+
+any woman not wearing a burqa? at least some people might not agree.
+
+so why is 1 guy in deciding that? why is he appointing others to decide?
+
+most importantly what stopping him from marking political stories or news as NSFW?
+
+after more digging, it seems he also can just delete stuff entirely.
+
+this isnt the p2p people want. its him at the top (same fucking dictatorship as reddit, or any other website), and just users as p2p below him. very clever. he just basically made a website (functionally speaking), that he doesnt have to pay the bandwidth for.
+
+thats not p2p. he kept all the benefits of site ownership, while just sticking users with the bill.
+
+its an interesting project, and if im not mistaken, someone could fork it and fix it.
+
+```
