@@ -269,3 +269,22 @@ thats not p2p. he kept all the benefits of site ownership, while just sticking u
 its an interesting project, and if im not mistaken, someone could fork it and fix it.
 
 ```
+
+#### Q: Is there a way to get an IPFS call to retrieve all IPFS links of what goes inside plebbit?
+A: there's a javascript API for it https://github.com/plebbit/plebbit-js
+
+to view the data of a subplebbit, you use its subplebbit address, ie
+
+https://plebbitapp.eth.limo/#/p/12D3KooWG3XbzoVyAE6Y9vHZKF64Yuuu4TjdgQKedk14iYmTEPWu/
+
+https://ipfs.io/ipns/12D3KooWG3XbzoVyAE6Y9vHZKF64Yuuu4TjdgQKedk14iYmTEPWu
+
+to view the data of a subplebbit that uses .eth, you have to first check the `subplebbit-address` text record like https://legacy.ens.domains/name/business-and-finance.eth
+
+to view a specific comment, you use the comment cid
+
+https://plebbitapp.eth.limo/#/p/plebtoken.eth/c/QmZ5aXQXHYFktyNTa4YeTjETvEfE6S62DHyFvF5ujrKWR6/
+
+https://ipfs.io/ipfs/QmZ5aXQXHYFktyNTa4YeTjETvEfE6S62DHyFvF5ujrKWR6
+
+you can check the plebbit-js readme to know the data schema stored on IPFS, the first entry point is the subplebbit address and the comment cid, but after that you need to also fetch subplebbit pages, comment updates and reply pages, etc (which are all IPFS CIDs, stored in the first CID) to get the rest of the data
