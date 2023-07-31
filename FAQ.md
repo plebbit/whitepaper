@@ -288,3 +288,9 @@ https://plebbitapp.eth.limo/#/p/plebtoken.eth/c/QmZ5aXQXHYFktyNTa4YeTjETvEfE6S62
 https://ipfs.io/ipfs/QmZ5aXQXHYFktyNTa4YeTjETvEfE6S62DHyFvF5ujrKWR6
 
 you can check the plebbit-js readme to know the data schema stored on IPFS, the first entry point is the subplebbit address and the comment cid, but after that you need to also fetch subplebbit pages, comment updates and reply pages, etc (which are all IPFS CIDs, stored in the first CID) to get the rest of the data
+
+if you're wondering how the website gets the default subplebbits addresses (the very first entry point when you visit the home page), at the moment it's from this github file https://github.com/plebbit/temporary-default-subplebbits/blob/master/subplebbits.json
+
+at some point we will change this to be some IPNS file with the keys controlled by the team, ie the team curates the default subs, but anyone can join a sub directly if they know the link/subplebbit address, none of the clients can block any sub, we only curate the default list, we don't and can't block
+
+at some point we will also have some default list curated by the PLEB DAO, completely on chain, without any human intervention
