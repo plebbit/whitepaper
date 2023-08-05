@@ -296,7 +296,8 @@ at some point we will change this to be some IPNS file with the keys controlled 
 at some point we will also have some default list curated by the PLEB DAO, completely on chain, without any human intervention
 
 #### Q: Why not use Lemmy or Mastodon
-A: - Mastodon and lemmy instances can delete your account/community data (they own your data), on plebbit you own your data, it's on your device and you seed it P2P, community owners cant delete it
+A:
+- Mastodon and lemmy instances can delete your account/community data (they own your data), on plebbit you own your data, it's on your device and you seed it P2P, community owners cant delete it
 
 - Mastodon and lemmy instances can block you from accessing and interacting with other instances through their client, which forces you to use multiple clients to interact with all instances you want, on plebbit, the client accesses all content directly and p2p, community owners can't block you from accessing any content. You only have to use a single client.
 
