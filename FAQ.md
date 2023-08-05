@@ -294,3 +294,12 @@ if you're wondering how the website gets the default subplebbits addresses (the 
 at some point we will change this to be some IPNS file with the keys controlled by the team, ie the team curates the default subs, but anyone can join a sub directly if they know the link/subplebbit address, none of the clients can block any sub, we only curate the default list, we don't and can't block
 
 at some point we will also have some default list curated by the PLEB DAO, completely on chain, without any human intervention
+
+#### Q: Why not use Lemmy or Mastodon
+A: - Mastodon and lemmy instances can delete your account/community data (they own your data), on plebbit you own your data, it's on your device and you seed it P2P, community owners cant delete it
+
+- Mastodon and lemmy instances can block you from accessing and interacting with other instances through their client, which forces you to use multiple clients to interact with all instances you want, on plebbit, the client accesses all content directly and p2p, community owners can't block you from accessing any content. You only have to use a single client.
+
+- Mastodon and lemmy instances require a domain name, a static, public HTTP endpoint, an SSL certificate, DDOS protection to run. All which are complicated to set up, cost money, sometimes require KYC, sometimes require the command line and linux. Your server, domain, ssl and ddos protection provider are intermediaries that delete/block your account.
+
+Whereas plebbit is a GUI executable like a bittorrent client, you download it, open it, that's it, you're done. No payments, no kyc, no command line, no config, no intermediaries that can shut down your account. 
