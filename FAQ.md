@@ -304,3 +304,12 @@ A:
 - Mastodon and lemmy instances require a domain name, a static, public HTTP endpoint, an SSL certificate, DDOS protection to run. All which are complicated to set up, cost money, sometimes require KYC, sometimes require the command line and linux. Your server, domain, ssl and ddos protection provider are intermediaries that delete/block your account.
 
 Whereas plebbit is a GUI executable like a bittorrent client, you download it, open it, that's it, you're done. No payments, no kyc, no command line, no config, no intermediaries that can shut down your account. 
+
+#### Q: can search be at least implemented within a subplebbit?
+A: there are 3 ways to search:
+
+1. you have some centralized server that indexes all posts, like warosu.org, then you search it. this can be federated, you could have more than 1 provider that offer this service, but it's centralized, they can hide search results
+
+2. P2P: the search function scrolls every page of the subplebbit in the background, which might take 6 seconds per page, at 100 posts per page, that's 10 minutes to search a sub with 100k posts, and this doesn't deep search within the comments, it only looks at the top 100 comments of each post, to deep search inside comments, you have to add another 6 seconds for each comment page you search, so deep searching a post with 1k comment would take 1 minute, deep search 1000 posts with 1k comment each would take 2 hours.
+
+3. P2P: it's not implemented yet, but at some point the community owner will probably be able to (optionally) share his entire DB, so you'll be able to download the entire DB and search it locally, a big sub will probably be GBs in size, so it wont be a quick search, you'll need to download the entire file.
