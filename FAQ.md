@@ -313,3 +313,50 @@ A: there are 3 ways to search:
 2. P2P: the search function scrolls every page of the subplebbit in the background, which might take 6 seconds per page, at 100 posts per page, that's 10 minutes to search a sub with 100k posts, and this doesn't deep search within the comments, it only looks at the top 100 comments of each post, to deep search inside comments, you have to add another 6 seconds for each comment page you search, so deep searching a post with 1k comment would take 1 minute, deep search 1000 posts with 1k comment each would take 2 hours.
 
 3. P2P: it's not implemented yet, but at some point the community owner will probably be able to (optionally) share his entire DB, so you'll be able to download the entire DB and search it locally, a big sub will probably be GBs in size, so it wont be a quick search, you'll need to download the entire file.
+
+#### Q: does it use WebRTC
+A: we use IPFS and libp2p, which support pretty much every transport, TCP, UPD/quic, and in the browser websockets, webrtc, webtransport
+
+at the moment the browser transports are kind of bleeding edge in libp2p so we're only using them experimentally, the web apps demos arent using them, they are using public providers similar to metamask which has a an ethereum RPC setting. plebbit also has IPFS/plebbit RPC settings in the app.
+
+getting p2p in the browser working is my biggest priority right now though, working on it every day
+
+#### Q: can the sub owner manipulate data?
+A: yes the owner of the sub controls the sub, they can delete posts, create fake posts, manipulate upvote counts, etc. they have full control. one thing they cannot do is fake a post from a certain author, because all posts are signed by both the sub owner and the author, a post not signed by the correct author will not display in any client
+
+if you think a sub owner is manipulating stuff, you should not use the sub, you're trusting them entirely
+
+
+#### Q: So there can’t be "public threads" not controlled by at least 1 community owner or mod?
+A: correct, it's not a blockchain, there are no global state, each community is its own p2p swarm, like each bittorrent file is its own p2p swarm, this is how it can scale infinitely with no transaction fees. plebbit could scale to literally consume all available bandwidth in the world, just like bittorrent was like 20% of all the world's bandwidth at some point.
+
+the only way to be fully sovereign is to create your own community, and post there. which is free and anyone can do, but you need to run a node 24/7 for your community to stay online.
+
+there will be different mechanisms for community discovery eventually, not implemented yet, for example if you upvote someone, the client can look at this user's post history and recommend you the subs he posts in. also we have a specs for token voting for default communities https://github.com/plebbit/plebbit-js/issues/25
+
+#### Q: So seeders don’t have to seed the entire content of what plebbit has?
+A: you just seed the content you consume, or if you own a community, you just seed your community. you dont need to sync the entire plebbit network to use plebbit, just like you dont need to sync the entire bittorrent network to use bittorrent. in fact you dont need to sync anything to run a full plebbit node, downloading a post or a subplebbit is the same as downloading a really small torrent files, it takes a few seconds max even fully p2p
+
+#### Q: Can it handle 1000posts per second at the moment?
+A: well first of all I dont think even the most popular sub on reddit has 1000 actions per seconds, so I dont think we need this kind of scale, second of all the limit of actions per second depends on how many challenges per second the sub owner's device can generate and validate, and how much bandwidth he has available, so the actions per seconds per sub can be increased by the sub owner just getting a better device and better internet. I'm pretty sure an old laptop and average internet can do 100 actions per seconds which is probably more than the most popular subs on reddit
+
+the sub owner's node basically regulates the pubsub network for his sub, if it runs out of bandwidth or resources, new challenge requests start dropping and not getting verified, and the peers who are spamming too many of them start getting removed from the pubsub. this is just a theoretical situation though, this will never happen in practice to non malicious peers because even the most popular reddit subs dont have that many actions per second, it'll only happen to peers that try to DDOS.
+
+#### Q: what about community network effects for mods that become malicious?
+A: the reddit design actually in practice protects against community network effects quite well, because anyone can create a community, and the community is displayed in the same app, so users dont have to migrate app, dont have to move to some other walled garden, they dont have to do any effort, they just click the "join" button on the app they already use and they just joined the competing community.
+
+I knew this from the start from using reddit for years, new competing communities used to spring up all the time and organically when mods started to suck. this doesnt happen much anymore because the global admins just shut down any community that starts to get any kind of clout. but before 2015 it happened organically all the time. reddit communities have no moat and little network effect if the app admins cannot ban competing communities. it's counter intuitive but it is how it is, I've seen it in action over and over from using reddit for a decade+
+
+also this will be reinforced by the fact that we will have many community discovery mechanisms that aren't controlled/fully controlled by anyone
+
+#### Q: how do you advertise your community?
+A: none of this is implemented yet, but crossposts, default communities (which are voted on by pleb token holders), p2p recommendations (if you upvote a user, the client looks at this user's posting history and recommends his sub), influencer multisubs: eventually there will be multisub pages like m/bitboy.eth that you can follow and it will add all the community that they personally curate, so you can convince them to add your community and all their followers will see it
+
+we're also always looking for new ways to improve community discovery, it's one of the weak point of the plebbit design, but it's in no way inferior to reddit, which just has admins choose the default subs, our methods will be equal or superior to reddit
+
+#### Q: plebbit will just reproduce the issues with reddit
+A: the issue with reddit isn't being banned by mods. that's completely fine, it's desirable. mods need to keep the community on topic and remove spam. they must be strict.
+
+the issue with reddit is they literally banned some of their most popular subs with tens of millions of users, purely based on ideology, and also that they actively send threats to sub owners and mods that they need to ban certain things or their subs will be seized from them. I'd say at least 90% of 2015 reddit users have had a community they liked banned by admins. they have lost at least 50% of their user base from 2015, which will now go to plebbit
+
+the subreddit mods are not the problem on reddit, the problems are the global admins. back in 2015 there was countless great mods, you could have a feed entirely of great subs with great mods. now those subs are all banned, or the mods have been replaced by the admins to their cronies that ban everything
