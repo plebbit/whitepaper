@@ -360,3 +360,13 @@ A: the issue with reddit isn't being banned by mods. that's completely fine, it'
 the issue with reddit is they literally banned some of their most popular subs with tens of millions of users, purely based on ideology, and also that they actively send threats to sub owners and mods that they need to ban certain things or their subs will be seized from them. I'd say at least 90% of 2015 reddit users have had a community they liked banned by admins. they have lost at least 50% of their user base from 2015, which will now go to plebbit
 
 the subreddit mods are not the problem on reddit, the problems are the global admins. back in 2015 there was countless great mods, you could have a feed entirely of great subs with great mods. now those subs are all banned, or the mods have been replaced by the admins to their cronies that ban everything
+
+#### Q: who decides what constitutes a vulgar sub?
+A: plebbit team, I guess we would have a list of words that are considered vulgar, and if those words are allowed in the post titles in your sub, your sub would get tagged as vulgar by the plebbit team
+
+my plan as of now is the DAO decide what the list of subs is, and the plebbit team assigns tags to them manually, so vulgar, adult and violent subs are hidden by default (but easy to show with a button)
+
+seems like the best of both world, we get a full decentralized feed, the token gets maximum utility, yet we also have a SFW feed by default so you can share the app with your normie friends
+
+also different clients can make different choices, like plebchan wont hide vulgar or violent, there could be another client called plebhub that hides all subs except adult
+
