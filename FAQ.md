@@ -3,7 +3,8 @@
 #
 
 #### Q: What are the tokenomics?
-A: 100% of the supply will be airdropped in 6 days, around 1 trillion tokens. No presale or team allocation, 100% airdrop. More tokens will be minted during later airdrops and liquidity farming but that will be in several months and only to bring more eyes to the project.
+A: 100% of the supply was airdropped in 2022, around 1.5 trillion tokens. No presale or team allocation, 100% airdrop.
+
 #### Q: Is this running on ETH?
 A: the token is on ETH, the plebbit protocol itself it not a blockchain, but the app will use several blockchains, tokens and NFTs to recreate all the features from reddit, like usernames, subplebbit names will be crypto domains like ENS (and other chains), awards will be NFTs, tips and upvotes will earn tokens (can set them to your own token or any coin of your choice in your subplebbit)
 #### Q: Can I say based things on Plebbit?
@@ -23,7 +24,6 @@ A: I believe there will be centralized solution that will host nodes for you, an
 
 #### Q: What role does the PLEB token play?
 A: The base protocol doesn't use tokens, which lets people who don't have interest in cryptocurrency (yet) use it for free, but optionally you can use any tokens to do many things, for example you can use names.eth (ENS, which are non fungible tokens) to represent a username or subplebbit name. You can use NFT images as avatars. You can use fungible tokens and NFTs (any token or cryptocurreny of the subplebbit owner's choice) to vote, curate, reward, tip, incentivize and/or as spam protection (instead of using captchas, require users of your subplebbit to own, stake, burn or pay a certain amount of a token/NFT of your choice to post/upvote). A subplebbit's name like memes.eth (becomes /p/memes.eth) could be owned by a DAO, and owners of the DAO's tokens could vote on chain for who gets to be admin and moderator of the subplebbit, i.e. a smart contract/DAO can be owner of a subplebbit.
-
 
 #### Q: Consider the potential of pay to post.
 A: If you make it so that you can't post unless you pay an amount of pleb as set by the subplebbit owner, you are on to something great. This would automatically provide a degree of spam protection, and the payment could either go to the subplebbit owner or the pleb development team or a combination of both.
@@ -74,14 +74,6 @@ I believe many subplebbit will implement the spam protection that you must have 
 There wont be new posts until the owner comes back online, but old posts will still show until there's no other seeds.
 
 In the MVP that uses just basic IPFS pubsub the posts sent while the owner is offline will actually be lost. Posts published while owner node is offline will be lost, they could be stored in each user's client and retried.
-
-#### Total Supply
-Total supply will be around 1 trillion, divided equally amongst all the airdrop participants, except those who have referral bonuses who will get more.
-
-#### Concerns with minting tokens
-You can put restrictions on upgrades, like a timelock, DAO voting, etc, but I'm not doing any of that yet, I don't want some whale to see the token as "safe" and buy up all the supply, I would rather many people see it as "unsafe" and buy a small amount, instead of just attracting whales.
-
-It's not unlimited forever, I have a plan, once the token has sufficient mcap, I will add safety measures like timelock, which will then allow bigger whales to get in, and eventually when the project is mature enough, it will be known how many tokens are needed and the contract upgrades can be locked forever or given to a DAO
 
 #### Q: How will the team be making money on this project?
 A: I will be paying for early development myself (already started a little bit with gicoin bounties https://gitcoin.co/issue/plebbit/whitepaper/3/100026984). In the beginning, the token will only be for bringing awareness to the project (and to the idea, that others can use to create p2p social apps), no funds will be used for development. But the token is an upgradable contract so if later down the road a dev fund is needed, one can be added (but only to pay for devs/marketing other than myself, I will never take a salary myself). The control of the upgrades can be put behind a timelock, controlled by a DAO, etc. Whatever the project needs.
