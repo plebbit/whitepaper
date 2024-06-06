@@ -362,3 +362,7 @@ seems like the best of both world, we get a full decentralized feed with no cens
 
 also different clients can make different choices, like plebchan wont hide vulgar or violent by default, there could be another client called plebhub that hides all subs except adult
 
+#### Q: what routers work with plebbit / IPFS?
+A: some routers crash when using IPFS as documented here https://github.com/ipfs/kubo/issues/3320 there are no known fixes for all routers at the moment, but some people are reported that these routers work:
+- UniFi UDM Pro https://github.com/ipfs/kubo/issues/3320#issuecomment-663026709
+- UniFi UDM https://github.com/ipfs/kubo/issues/3320#issuecomment-663053618
