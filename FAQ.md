@@ -2,19 +2,59 @@
 ## _A collection of his responses from Telegram and Reddit_
 #
 
-#### Q: What are the tokenomics?
-A: 100% of the supply was airdropped in 2022, around 1.5 trillion tokens. No presale or team allocation, 100% airdrop.
+#### Q: Why not use Mastodon/ActivityPub/Bluesky/Nostr/Farcaster/Steemit/Blockchain
+
+1. mastodon / activitypub
+- Instance admins can delete user accounts and communities. Instance admins can block other instances. It's too difficult to run your own instance, you need to buy a domain name, server, DDOS protection, set up SSL, etc.
+- No mechanism for a community owner to communicate a challenge to post to his community, so impossible to prevent spam.
+
+2. bluesky
+- Bluesky instances cannot delete user accounts and communities (as long as they are backed up somewhere else), but they can block user accounts and communities. Since running your own instance is difficult, your user account and community will be blocked most of the time and you won't be able to reach your users.
+- No mechanism for a community owner to communicate a challenge to post to his community, so impossible to prevent spam.
+
+3. nostr
+- Bluesky instances cannot delete user accounts and communities (as long as they are backed up somewhere else), but they can block user accounts and communities. Since running your own instance is difficult, your user account and community will be blocked most of the time and you won't be able to reach your users.
+- No mechanism for a community owner to communicate a challenge to post to his community, so impossible to prevent spam.
+
+4. farcaster
+- Hubs cannot delete user accounts and communities (as long as they are backed up somewhere else), but they can block user accounts and communities. Since running your own hub is difficult (long sync time, lots of bandwidth/storage/ram), your user account and community will be blocked most of the time and you won't be able to reach your users.
+- Hubs in general cannot scale infinitely as they keep growing forever, like a blockchain.
+- Must pay $5 on optimism to be able to post, most users don't want to pay. Also can be censored by the optimism RPC or USDC.
+- No mechanism for a community owner to communicate a challenge to post to his community, so impossible to prevent spam.
+
+5. steemit
+- Blockchain RPCs cannot delete user accounts and communities (as long as they are backed up somewhere else), but they can block user accounts and communities. Since running your own blockchain node is difficult (long sync time, lots of bandwidth/storage/ram), your user account and community will be blocked most of the time and you won't be able to reach your users.
+- Blockchains in general cannot scale infinitely as they keep growing forever.
+- Must pay blockchain transaction fees to post, most users don't want to pay.
+- No mechanism for a community owner to communicate a challenge to post to his community, so impossible to prevent spam.
+
+plebbit solves each problem:
+- instances/hubs/rpcs cannot block a user account or community, because there are no instances, it's directly peer to peer. a community node can be run from home on consumer internet, no server, domain name, SSL, sync time, etc. it's as easy as running a bittorrent client.
+- it can scale infinitely because there are no historical ledger like a blockchain or hub, it's like bittorrent, if a community no longer has any seeds, it stops existing. (this is also a downside of plebbit, but scaling is more important, not scaling makes the system useless)
+- it has no cost to publish, like bittorrent, because is has no historical ledger that each node must sync. users seed their communities for free while they use it, like bittorrent.
+- a community node can communicate a challenge to a user to post to his community (like a minimum user account age, or karma, or a captcha, whitelist, etc), because it's directly peer to peer, the community node is the instance, so it can gatekeep it however it wants. (this is also a downside of plebbit, a community node must be online 24/7, but it's also possible to delegate running a node to an RPC/instance/hub, you just lose some censorship resistance, so it's not inferior in this regards, it's strictly superior because of the optionality).
+
+"peer discovery for P2P is reliant on servers"
+- there are 3 mechanism for peer discovery for P2P:
+  - trackers (like bittorrent)
+  - bootstrap/relay peers for DHT
+  - peer exchange
+- trackers are servers like just instances/relays, but they are very lightweight and easy to run since they are just ephemeral key/value stores for peers. they dont have to store terabytes of data permanently, they only have to store a list of peers, and only for a few hours (while the peers are online). you also only need to fetch peers for a community once, after that you can store them locally forever and reuse the same peers, so the trackers dont need to always remain online, unlike instances/relays. there are also other peer discovery methods, trackers are just one of them, unlike instances/relays.
+- bootstrap/relay peers are similar to instances, but they are much easier to run, they are lightweight, no SSL or storage required. bootstrap peers are used to connect to initially, to "bootstrap" the peer discovery, your node ask them for more peers. relay peers (very different from nostr relays) are used to help you do hole punching if you are behind a NAT. Bootstrap/relay peers require a server/publicly accessible IP address, but they are lightweight, and any node running on a server can serve as a bootstrap/relay, so in a large network there are potentially thousands to choose from, and your client can remember them for next time you use the app.
+- peer exchange: once you know a peer for a community, your node can ask it for more peers for that community, so you can always keep a fresh list of peers for a community, completely P2P, no instances/relays. it's also possible to exchange peers via a name system text record, or even manually on whatsapp or find them via a google search.
+
+so in summary, decentralized/censorship resistant reddit/communities cannot be built on activitypub/nostr/bluesky/farcaster/blockchain for 2 main reasons:
+  - instances will always censor you, and you can't just run your own, it's too hard.
+  - communities themselves must be able to communicate a custom antispam challenge to users who post, and this cannot be done through instances, it has to be done P2P.
 
 #### Q: Is this running on ETH?
-A: the token is on ETH, the plebbit protocol itself it not a blockchain, but the app will use several blockchains, tokens and NFTs to recreate all the features from reddit, like usernames, subplebbit names will be crypto domains like ENS (and other chains), awards will be NFTs, tips and upvotes will earn tokens (can set them to your own token or any coin of your choice in your subplebbit)
+A: the plebbit protocol itself it not a blockchain, it's a content addressed network like Bittorrent, built using IPFS/libp2p.
+
 #### Q: Can I say based things on Plebbit?
 A: you can say the basest of things
 
 #### Q: Will country flags be implemented on Plebbit?
 A: the owner of the subplebbit can do it yes, but they would need to run a public HTTP endpoint to detect the IP of users. It's not possible at the protocol level, but the subplebbit owner can force users to reveal their IP if they want, as a form of spam protection, and then he could add a country flag to each post. If the user doesn't want to reveal their IP then they can't post in that subplebbit.
-
-#### Q: What is my incentive to buy this token for?
-A: with my strategy the small guy will make more, because whales will only invest after safety measures are in place, so it gives more chances to the small guy to get a part of the supply early. By the time I put the timelock thousands of non-whales will have had the chance to get involved.
 
 #### Q: Are you with the CIA?
 A: not at the moment but the CIA will inevitably replace me at some point.
