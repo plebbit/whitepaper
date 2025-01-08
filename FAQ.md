@@ -4,7 +4,7 @@
 
 #### Q: Why not use Mastodon/ActivityPub/Bluesky/Nostr/Farcaster/Steemit/Blockchain
 
-1. mastodon / activitypub
+1. mastodon / lemmy / activitypub
 - Instance admins can delete user accounts and communities. Instance admins can block other instances. It's too difficult to run your own instance, you need to buy a domain name, server, DDOS protection, set up SSL, etc.
 - No mechanism for a community owner to communicate a challenge to post to his community, so impossible to prevent spam.
 
