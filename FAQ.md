@@ -402,7 +402,14 @@ seems like the best of both world, we get a full decentralized feed with no cens
 
 also different clients can make different choices, like plebchan wont hide vulgar or violent by default, there could be another client called plebhub that hides all subs except adult
 
-#### Q: what routers work with plebbit / IPFS?
-A: some routers crash when using IPFS as documented here https://github.com/ipfs/kubo/issues/3320 there are no known fixes for all routers at the moment, but some people are reported that these routers work:
-- UniFi UDM Pro https://github.com/ipfs/kubo/issues/3320#issuecomment-663026709
-- UniFi UDM https://github.com/ipfs/kubo/issues/3320#issuecomment-663053618
+#### Q: reasons not to use the comment number as a comment id (like imageboards)
+- this number cant be validate by the client, the sub owner can put any value in comment.number, like it could put all duplicate numbers, and then the UI seems buggy and more difficult to use
+- the sub owner could put a wrong number to trick the user into think someone replied to the wrong person
+- it might not be compatible with some other uses cases, like an ownerless sub moderated by some token holders, has nobody with authority to decide comment.number
+- it wont match the URL of the comment like c/<cid>
+- it wont be compatible with in content links, like comment.content: "this is great c/<cid>"
+- users can say "checked" using cids, they form patterns and have duplicate charaters
+- the parentComment.number might load slowly, or never load, so the parent id would never be known, or display a janky loading indicator
+- we want comment cids to be a standard of the plebbit protocol. like bittorrent has standard infohash, everyone knows what it is in all clients
+- lottery based on comment.number should be done using flairs, as most UIs display flairs, but most don't display comment cids or numbers
+- cids shouldnt be converted to digits encoding because it causes too many digits, and if you shorten the digits, it becomes easy to bruteforce any id
