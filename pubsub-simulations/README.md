@@ -1,35 +1,60 @@
-By looking at statistics from all messages received, no correlation with the spammer could be found, but if you look only at messages first seen, and correlate with messages that lead to a full captcha completion, the spammer can be detected, in a scenario where all peers send all messages to everyone.
+In simulation 1, `spammerNode` sends 90 failed messages to `attackedNode`. `friendlyNode2` and `friendlyNode3` send 10 succeeded messages to all nodes. All nodes relay all messages except for `spammerNode`.
 
-In simulation1 we demonstrate that there is a strong correlation between first seen messages coming from a spammer, and 0 correlation between non-first seen messages.
+By looking at statistics from all messages received, no correlation with the spammer could be found.
 
 ```
-friendlyNode1 stats (the attacked node)
----------------------------------------
-node name request challen answer  validat incompl complete
-spammerNode 110 110 20  20  90  20
-friendlyNode2 110 110 20  20  90  20
-ownerNode 110 110 20  20  90  20
-friendlyNode3 110 110 20  20  90  20
-friendlyNode4 110 110 20  20  90  20
-first seen
-spammerNode 91  0 0 0 90  1
-friendlyNode2 13  3 14  0 0 15
-ownerNode 3 97  1 20  0 20
-friendlyNode3 2 4 2 0 0 4
-friendlyNode4 1 6 3 0 0 4
+attackedNode received stats
+---------------------------
+from            request challenge       answer  verification    failed  succeeded
+spammerNode     110     110             20      20              90      20
+friendlyNode2   110     110             20      20              90      20
+friendlyNode3   110     110             20      20              90      20
+friendlyNode4   110     110             20      20              90      20
+commuOwnerNode  110     110             20      20              90      20
 
-friendlyNode2 stats (regular node)
-----------------------------------
-node name request challen answer  validat incompl complete
-ownerNode 110 110 20  20  90  20
-friendlyNode1 110 110 20  20  90  20
-friendlyNode4 110 110 20  20  90  20
-friendlyNode3 110 110 20  20  90  20
-first seen
-ownerNode 6 96  2 17  4 17
-friendlyNode1 89  6 13  1 78  15
-friendlyNode4 12  5 1 1 7 6
-friendlyNode3 3 3 4 1 1 6
+friendlyNode2 received stats
+----------------------------
+from            request challenge       answer  verification    failed  succeeded
+attackedNode    110     110             20      20              90      20
+friendlyNode4   110     110             20      20              90      20
+friendlyNode3   110     110             20      20              90      20
+commuOwnerNode  110     110             20      20              90      20
+
+friendlyNode3 received stats
+----------------------------
+from            request challenge       answer  verification    failed  succeeded
+attackedNode    110     110             20      20              90      20
+friendlyNode2   110     110             20      20              90      20
+commuOwnerNode  110     110             20      20              90      20
+friendlyNode4   110     110             20      20              90      20
+```
+
+By looking only at "first seen" messages, i.e. the node that relays us a message for the first time, there is a correlation with the spammer, so presumably the spammer could be detected.
+
+```
+attackedNode received stats
+----------------------------
+from            request challenge       answer  verification    failed  succeeded
+spammerNode     90      0               0       0               90      0
+friendlyNode2   7       5               9       0               0       10
+friendlyNode3   10      5               10      1               0       11
+friendlyNode4   1       7               1       2               0       4
+commuOwnerNode  2       93              0       17              0       17
+
+friendlyNode2 received stats
+----------------------------
+from            request challenge       answer  verification    failed  succeeded
+attackedNode    85      3               5       0               83      7
+friendlyNode4   7       5               4       1               4       7
+friendlyNode3   15      3               9       1               2       14
+commuOwnerNode  3       99              2       18              1       19
+
+friendlyNode3 received stats
+----------------------------
+from            request challenge       answer  verification    failed  succeeded
+attackedNode    86      3               3       0               82      7
+friendlyNode2   15      5               10      0               4       13
+commuOwnerNode  5       101             4       19              3       19
 ```
 
 In simulation2 we demonstrate that we can block peers eventually out of the network.

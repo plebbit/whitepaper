@@ -1,53 +1,55 @@
-friendlyNode1 stats (the attacked node)
----------------------------------------
-node name	request	challen	answer	validat	incompl	complete
-spammerNode	110	110	20	20	90	20
-friendlyNode2	110	110	20	20	90	20
-ownerNode	110	110	20	20	90	20
-friendlyNode3	110	110	20	20	90	20
-friendlyNode4	110	110	20	20	90	20
-first seen
-spammerNode	91	0	0	0	90	1
-friendlyNode2	13	3	14	0	0	15
-ownerNode	3	97	1	20	0	20
-friendlyNode3	2	4	2	0	0	4
-friendlyNode4	1	6	3	0	0	4
+first seen relayed messages only
+--------------------------------
 
-friendlyNode2 stats (regular node)
-----------------------------------
-node name	request	challen	answer	validat	incompl	complete
-ownerNode	110	110	20	20	90	20
-friendlyNode1	110	110	20	20	90	20
-friendlyNode4	110	110	20	20	90	20
-friendlyNode3	110	110	20	20	90	20
-first seen
-ownerNode	6	96	2	17	4	17
-friendlyNode1	89	6	13	1	78	15
-friendlyNode4	12	5	1	1	7	6
-friendlyNode3	3	3	4	1	1	6
+attackedNode received stats
+----------------------------
+from            request challenge       answer  verification    failed  succeeded
+spammerNode     90      0               0       0               90      0
+friendlyNode2   7       5               9       0               0       10
+friendlyNode3   10      5               10      1               0       11
+friendlyNode4   1       7               1       2               0       4
+commuOwnerNode  2       93              0       17              0       17
 
-friendlyNode3 stats (regular node)
-----------------------------------
-node name	request	challen	answer	validat	incompl	complete
-friendlyNode1	110	110	20	20	90	20
-friendlyNode2	110	110	20	20	90	20
-ownerNode	110	110	20	20	90	20
-friendlyNode4	110	110	20	20	90	20
-first seen
-friendlyNode1	85	6	8	2	77	10
-friendlyNode2	15	3	10	0	5	11
-ownerNode	4	98	2	18	3	18
-friendlyNode4	6	3	0	0	5	1
+friendlyNode2 received stats
+----------------------------
+from            request challenge       answer  verification    failed  succeeded
+attackedNode    85      3               5       0               83      7
+friendlyNode4   7       5               4       1               4       7
+friendlyNode3   15      3               9       1               2       14
+commuOwnerNode  3       99              2       18              1       19
 
-friendlyNode4 stats (regular node)
-----------------------------------
-node name	request	challen	answer	validat	incompl	complete
-friendlyNode1	110	110	20	20	90	20
-friendlyNode2	110	110	20	20	90	20
-ownerNode	110	110	20	20	90	20
-friendlyNode3	110	110	20	20	90	20
-first seen
-friendlyNode1	90	6	10	2	81	12
-friendlyNode2	13	6	9	0	3	11
-ownerNode	5	92	0	16	4	16
-friendlyNode3	2	6	1	2	2	3
+friendlyNode3 received stats
+----------------------------
+from            request challenge       answer  verification    failed  succeeded
+attackedNode    86      3               3       0               82      7
+friendlyNode2   15      5               10      0               4       13
+commuOwnerNode  5       101             4       19              3       19
+friendlyNode4   4       1               3       1               1       6
+
+all relayed messages
+--------------------
+
+attackedNode received stats
+---------------------------
+from            request challenge       answer  verification    failed  succeeded
+spammerNode     110     110             20      20              90      20
+friendlyNode2   110     110             20      20              90      20
+friendlyNode3   110     110             20      20              90      20
+friendlyNode4   110     110             20      20              90      20
+commuOwnerNode  110     110             20      20              90      20
+
+friendlyNode2 received stats
+----------------------------
+from            request challenge       answer  verification    failed  succeeded
+attackedNode    110     110             20      20              90      20
+friendlyNode4   110     110             20      20              90      20
+friendlyNode3   110     110             20      20              90      20
+commuOwnerNode  110     110             20      20              90      20
+
+friendlyNode3 received stats
+----------------------------
+from            request challenge       answer  verification    failed  succeeded
+attackedNode    110     110             20      20              90      20
+friendlyNode2   110     110             20      20              90      20
+commuOwnerNode  110     110             20      20              90      20
+friendlyNode4   110     110             20      20              90      20
