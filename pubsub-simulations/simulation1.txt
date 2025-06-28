@@ -2,7 +2,7 @@ first seen relayed messages only
 --------------------------------
 
 attackedNode received stats
-----------------------------
+---------------------------
 from            request challenge       answer  verification    failed  succeeded
 spammerNode     90      0               0       0               90      0
 friendlyNode2   7       5               9       0               0       10

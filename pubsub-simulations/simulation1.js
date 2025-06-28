@@ -366,7 +366,7 @@ const logStats = () =>{
   console.log('--------------------------------')
 
   console.log('\nattackedNode received stats')
-  console.log('----------------------------')
+  console.log('---------------------------')
   attackedNode.printIpAddressesFirstSeenStatistics()
   console.log('\nfriendlyNode2 received stats')
   console.log('----------------------------')
@@ -386,27 +386,6 @@ const logStats = () =>{
   friendlyNode2.printIpAddressesStatistics()
   console.log('\nfriendlyNode3 received stats')
   console.log('----------------------------')
-  friendlyNode3.printIpAddressesStatistics()
-}
-
-const logStats2 = () =>{
-  console.log('\nattackedNode received stats, first seen relayed messages only')
-  console.log('-------------------------------------------------------------')
-  attackedNode.printIpAddressesFirstSeenStatistics()
-  console.log('\nattackedNode received stats, all relayed messages')
-  console.log('-------------------------------------------------')
-  attackedNode.printIpAddressesStatistics()
-  console.log('\nfriendlyNode2 received stats, first seen relayed messages only')
-  console.log('--------------------------------------------------------------')
-  friendlyNode2.printIpAddressesFirstSeenStatistics()
-  console.log('\nfriendlyNode2 received stats, all relayed messages')
-  console.log('--------------------------------------------------')
-  friendlyNode2.printIpAddressesStatistics()
-  console.log('\nfriendlyNode3 received stats, first seen relayed messages only')
-  console.log('--------------------------------------------------------------')
-  friendlyNode3.printIpAddressesFirstSeenStatistics()
-  console.log('\nfriendlyNode3 received stats, all relayed messages')
-  console.log('--------------------------------------------------')
   friendlyNode3.printIpAddressesStatistics()
 }
 

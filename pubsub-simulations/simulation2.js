@@ -15,16 +15,22 @@ let delayCount = 0
 const maxDelay = 3000
 const getNextMessageDelay = () => getRandomNumber('messagedelay' + delayCount++) % maxDelay
 
-const minimumBlacklistIncompleteCaptchaChallengeCount = 50
-const minimumBlacklistIncompleteCaptchaChallengeRatio = 0.5
+const minimumBlacklistIncompleteChallengeCount = 50
+const minimumBlacklistIncompleteChallengeRatio = 0.6
 
-// const consoleLog = console.log
-// console.log = (...args) => {
-//   if (args.join(' ').match('captcha')) {
-//     return
-//   }
-//   consoleLog(...args)
-// }
+let timeout
+const exitAfterLogs = () => {
+  clearTimeout(timeout)
+  timeout = setTimeout(() => {
+    logStats()
+    process.exit(0)
+  }, 10000)
+}
+
+const log = (...args) => {
+  console.log(...args)
+  exitAfterLogs()
+}
 
 class PubSubNetwork extends EventEmitter {
   constructor() {
@@ -32,14 +38,14 @@ class PubSubNetwork extends EventEmitter {
     this.nodes = {}
     this.nodesIpAddresses = {}
     this.messageCount = 0
-    this.captchaChallengeCount = 0
+    this.challengeCount = 0
     this.on('newNode', (newNode) => this.handleNewNode(newNode))
   }
 
   handleNewNode(newNode) {
     this.nodes[newNode.id] = newNode
     this.nodesIpAddresses[newNode.ipAddress] = newNode
-    console.log('new node', newNode.name, newNode.id, newNode.ipAddress)
+    log('new node', newNode.name, newNode.id, newNode.ipAddress)
   }
 }
 
@@ -53,7 +59,7 @@ class Node extends EventEmitter {
     this.ipAddress = getRandomIpAddress(name)
     this.messagesSent = {}
     this.messagesReceived = {}
-    this.captchaChallengeRequestsSent = {}
+    this.challengeRequestsSent = {}
     this.ipAddressesStatistics = {}
 
     this.connnectToNodes()
@@ -65,7 +71,7 @@ class Node extends EventEmitter {
       const node = pubSubNetwork.nodes[nodeId]
       // subscribe to the new node's messages
       node.on('message', (message) => this.handleMessage(message))
-      console.log(this.name, 'connected to', node.name)
+      log(this.name, 'connected to', node.name)
     }
 
     // tell the network that this new node has joined
@@ -78,14 +84,14 @@ class Node extends EventEmitter {
   handleNewNode(newNode) {
     // subscribe to the new node's messages
     newNode.on('message', (message) => this.handleMessage(message))
-    console.log(this.name, 'connected to', newNode.name)
+    log(this.name, 'connected to', newNode.name)
   }
 
   async handleMessage(message) {
     await delay(getNextMessageDelay())
 
-    // do nothing because the ip is blacklisted
-    if (this.ipAddressIsBlacklisted(message.senderNode.ipAddress)) {
+    // do nothing because the ip is blocked
+    if (this.ipAddressIsBlocked(message.senderNode.ipAddress)) {
       return
     }
     this.trackStatistics(message)
@@ -94,9 +100,9 @@ class Node extends EventEmitter {
       return
     }
 
-    // we sent this captcha challenge request and this is the answer
-    if (message.type === 'captchaChallenge' && this.captchaChallengeRequestsSent[message.value]) {
-      this.sendCaptchaChallengeAnswer(message.value)
+    // we sent this challenge request and this is the answer
+    if (message.type === 'challenge' && this.challengeRequestsSent[message.value]) {
+      this.sendChallengeAnswer(message.value)
     }
 
     this.relayMessage(message)
@@ -114,21 +120,21 @@ class Node extends EventEmitter {
     this.sendMessage(relayedMessage)
   }
 
-  sendCaptchaChallengeRequest() {
-    const captchaChallengeRequestId = getRandomString('captchaChallengeRequest' + pubSubNetwork.captchaChallengeCount++)
-    const message = new Message({type: 'captchaChallengeRequest', value: captchaChallengeRequestId, senderNode: this})
+  sendChallengeRequest() {
+    const challengeRequestId = getRandomString('challengeRequest' + pubSubNetwork.challengeCount++)
+    const message = new Message({type: 'challengeRequest', value: challengeRequestId, senderNode: this})
 
-    // store own captcha challenge requests send and await reply
-    this.captchaChallengeRequestsSent[captchaChallengeRequestId] = message
+    // store own challenge requests send and await reply
+    this.challengeRequestsSent[challengeRequestId] = message
 
-    console.log(`${this.name} authored message ${message.id} '${message.type}:${message.value}'`)
+    log(`${this.name} authored message ${message.id} '${message.type}:${message.value}'`)
 
     this.sendMessage(message)
   }
 
-  sendCaptchaChallengeAnswer(captchaChallengeId) {
-    const message = new Message({type: 'captchaChallengeAnswer', value: captchaChallengeId, senderNode: this})
-    console.log(`${this.name} authored message ${message.id} '${message.type}:${message.value}'`)
+  sendChallengeAnswer(challengeId) {
+    const message = new Message({type: 'challengeAnswer', value: challengeId, senderNode: this})
+    log(`${this.name} authored message ${message.id} '${message.type}:${message.value}'`)
     this.sendMessage(message)
   }
 
@@ -144,51 +150,56 @@ class Node extends EventEmitter {
     }
     this.ipAddressesStatistics[message.senderNode.ipAddress].addMessage(message, {firstSeen})
 
-    // track completed captcha challenges received from other peers than first seen
-    if (message.type.match(/captchachallengevalidation/i)) {
+    // track completed challenges received from other peers than first seen
+    if (message.type.match(/challengeverification/i)) {
       for (const i in this.ipAddressesStatistics) {
-        this.ipAddressesStatistics[i].addCompleteCaptchaChallenge(message)
+        this.ipAddressesStatistics[i].addCompleteChallenge(message)
       }
     }
 
-    console.log(`${this.name} received message${firstSeen ? ' first seen' : ''} ${message.id} '${message.type}:${message.value}' from ${message.senderNode.name}`)
+    log(`${this.name} received message${firstSeen ? ' first seen' : ''} ${message.id} '${message.type}:${message.value}' from ${message.senderNode.name}`)
   }
 
-  ipAddressIsBlacklisted(ipAddress) {
+  ipAddressIsBlocked(ipAddress) {
     if (!this.ipAddressesStatistics[ipAddress]) {
       return false
     }
     const statistics = this.ipAddressesStatistics[ipAddress].getFirstSeenStatistics()
-    if (statistics.incompleteCaptchaChallengeCount < minimumBlacklistIncompleteCaptchaChallengeCount) {
+    if (statistics.incompleteChallengeCount < minimumBlacklistIncompleteChallengeCount) {
       return false
     }
-    const ratio = statistics.completeCaptchaChallengeCount / statistics.incompleteCaptchaChallengeCount
-    if (ratio > minimumBlacklistIncompleteCaptchaChallengeRatio) {
+    const ratio = statistics.completeChallengeCount / statistics.incompleteChallengeCount
+    if (ratio > minimumBlacklistIncompleteChallengeRatio) {
       return false
     }
     return true
   }
 
   printIpAddressesStatistics() {
-    console.log(`node name\trequest\tchallen\tanswer\tvalidat\tincompl\tcomplete`)
-    for (const ipAddress in this.ipAddressesStatistics) {
+    const sortedIpAddresses = Object.keys(this.ipAddressesStatistics).sort((a, b) =>(this.ipAddressesStatistics[b].getFirstSeenStatistics().incompleteChallengeCount || 0) - (this.ipAddressesStatistics[a].getFirstSeenStatistics().incompleteChallengeCount || 0))
+    console.log(`from\t\trequest\tchallenge\tanswer\tverification\tfailed\tsucceeded\tblocked`)
+    for (const ipAddress of sortedIpAddresses) {
       const statistics = this.ipAddressesStatistics[ipAddress].getStatistics()
-      console.log(`${pubSubNetwork.nodesIpAddresses[ipAddress].name}\t${statistics.captchaChallengeRequest || 0}\t${statistics.captchaChallenge || 0}\t${statistics.captchaChallengeAnswer || 0}\t${statistics.captchaChallengeValidation || 0}\t${statistics.incompleteCaptchaChallengeCount || 0}\t${statistics.completeCaptchaChallengeCount || 0}`)
+      console.log(`${pubSubNetwork.nodesIpAddresses[ipAddress].name}\t${statistics.challengeRequest || 0}\t${statistics.challenge || 0}\t\t${statistics.challengeAnswer || 0}\t${statistics.challengeVerification || 0}\t\t${statistics.incompleteChallengeCount || 0}\t${statistics.completeChallengeCount || 0}\t\t${this.ipAddressIsBlocked(ipAddress)}`)
     }
-    console.log(`first seen`)
-    for (const ipAddress in this.ipAddressesStatistics) {
+  }
+
+  printIpAddressesFirstSeenStatistics() {
+    const sortedIpAddresses = Object.keys(this.ipAddressesStatistics).sort((a, b) =>(this.ipAddressesStatistics[b].getFirstSeenStatistics().incompleteChallengeCount || 0) - (this.ipAddressesStatistics[a].getFirstSeenStatistics().incompleteChallengeCount || 0))
+    console.log(`from\t\trequest\tchallenge\tanswer\tverification\tfailed\tsucceeded\tblocked`)
+    for (const ipAddress of sortedIpAddresses) {
       const statistics = this.ipAddressesStatistics[ipAddress].getFirstSeenStatistics()
-      console.log(`${pubSubNetwork.nodesIpAddresses[ipAddress].name}\t${statistics.captchaChallengeRequest || 0}\t${statistics.captchaChallenge || 0}\t${statistics.captchaChallengeAnswer || 0}\t${statistics.captchaChallengeValidation || 0}\t${statistics.incompleteCaptchaChallengeCount || 0}\t${statistics.completeCaptchaChallengeCount || 0}`)
+      console.log(`${pubSubNetwork.nodesIpAddresses[ipAddress].name}\t${statistics.challengeRequest || 0}\t${statistics.challenge || 0}\t\t${statistics.challengeAnswer || 0}\t${statistics.challengeVerification || 0}\t\t${statistics.incompleteChallengeCount || 0}\t${statistics.completeChallengeCount || 0}\t\t${this.ipAddressIsBlocked(ipAddress)}`)
     }
   }
 }
 
-class OwnerNode extends Node {
+class CommunityOwnerNode extends Node {
   async handleMessage(message) {
     await delay(getNextMessageDelay())
 
-    // do nothing because the ip is blacklisted
-    if (this.ipAddressIsBlacklisted(message.senderNode.ipAddress)) {
+    // do nothing because the ip is blocked
+    if (this.ipAddressIsBlocked(message.senderNode.ipAddress)) {
       return
     }
 
@@ -198,28 +209,28 @@ class OwnerNode extends Node {
       return
     }
 
-    // owner node can deliver captcha challenges to those who request it
-    if (message.type === 'captchaChallengeRequest') {
-      this.sendCaptchaChallenge(message.value)
+    // owner node can deliver challenges to those who request it
+    if (message.type === 'challengeRequest') {
+      this.sendChallenge(message.value)
     }
 
-    // owner node can validate captcha challenge answers
-    if (message.type === 'captchaChallengeAnswer') {
-      this.sendCaptchaChallengeValidation(message.value)
+    // owner node can validate challenge answers
+    if (message.type === 'challengeAnswer') {
+      this.sendChallengeVerification(message.value)
     }
 
     this.relayMessage(message)
   }
 
-  sendCaptchaChallenge(captchaChallengeId) {
-    const message = new Message({type: 'captchaChallenge', value: captchaChallengeId, senderNode: this})
-    console.log(`${this.name} authored message ${message.id} '${message.type}:${message.value}'`)
+  sendChallenge(challengeId) {
+    const message = new Message({type: 'challenge', value: challengeId, senderNode: this})
+    log(`${this.name} authored message ${message.id} '${message.type}:${message.value}'`)
     this.sendMessage(message)
   }
 
-  sendCaptchaChallengeValidation(captchaChallengeId) {
-    const message = new Message({type: 'captchaChallengeValidation', value: captchaChallengeId, senderNode: this})
-    console.log(`${this.name} authored message ${message.id} '${message.type}:${message.value}'`)
+  sendChallengeVerification(challengeId) {
+    const message = new Message({type: 'challengeVerification', value: challengeId, senderNode: this})
+    log(`${this.name} authored message ${message.id} '${message.type}:${message.value}'`)
     this.sendMessage(message)
   }
 }
@@ -232,19 +243,19 @@ class SpammerNode extends Node {
     // only connect to one node to hide yourself
     for (const nodeId in pubSubNetwork.nodes) {
       const node = pubSubNetwork.nodes[nodeId]
-      if (node.name !== 'friendlyNode1') {
+      if (node.name !== 'attackedNode') {
         continue
       }
       // make the one node connect to you
       node.handleNewNode(this)
       // connect to the one node
       node.on('message', (message) => this.handleMessage(message))
-      console.log(this.name, 'connected to', node.name)
+      log(this.name, 'connected to', node.name)
     }
   }
 
-  sendCaptchaChallengeAnswer() {
-    // the spammer never sends captcha answers
+  sendChallengeAnswer() {
+    // the spammer never sends challenge answers
   }
 }
 
@@ -260,13 +271,13 @@ class Message {
 class IpAddressStatistics {
   constructor() {
     this.messageTypesCounts = {}
-    this.incompleteCaptchaChallenges = {}
-    this.completeCaptchaChallenges = {}
+    this.incompleteChallenges = {} // failed or pending succeeded challenges
+    this.completeChallenges = {} // succeeded challenges
 
     this.messageIds = {}
     this.firstSeenMessageTypesCounts = {}
-    this.firstSeenIncompleteCaptchaChallenges = {}
-    this.firstSeenCompleteCaptchaChallenges = {}
+    this.firstSeenIncompleteChallenges = {}
+    this.firstSeenCompleteChallenges = {}
   }
 
   addMessage(message, {firstSeen} = {}) {
@@ -276,13 +287,13 @@ class IpAddressStatistics {
     }
     this.messageTypesCounts[type]++
 
-    // never consider "captchachallenge" incomplete because it comes from owner, we know it's not spam
-    if (type.match(/captchachallengerequest|captchachallengeanswer/i) && !this.completeCaptchaChallenges[message.value]) {
-      this.incompleteCaptchaChallenges[message.value] = message
+    // never consider "challenge" incomplete because it comes from owner, we know it's not spam
+    if (type.match(/challengerequest|challengeanswer/i) && !this.completeChallenges[message.value]) {
+      this.incompleteChallenges[message.value] = message
     }
-    if (type.match(/captchachallengevalidation/i)) {
-      delete this.incompleteCaptchaChallenges[message.value]
-      this.completeCaptchaChallenges[message.value] = message
+    if (type.match(/challengeverification/i)) {
+      delete this.incompleteChallenges[message.value]
+      this.completeChallenges[message.value] = message
     }
 
     // if this is the first time we see this message
@@ -292,84 +303,116 @@ class IpAddressStatistics {
       }
       this.firstSeenMessageTypesCounts[type]++
 
-      // never consider "captchachallenge" incomplete because it comes from owner, we know it's not spam
-      if (type.match(/captchachallengerequest|captchachallengeanswer/i) && !this.firstSeenCompleteCaptchaChallenges[message.value]) {
-        this.firstSeenIncompleteCaptchaChallenges[message.value] = message
+      // never consider "challenge" incomplete because it comes from owner, we know it's not spam
+      if (type.match(/challengerequest|challengeanswer/i) && !this.firstSeenCompleteChallenges[message.value]) {
+        this.firstSeenIncompleteChallenges[message.value] = message
       }
-      if (type.match(/captchachallengevalidation/i)) {
-        delete this.firstSeenIncompleteCaptchaChallenges[message.value]
-        this.firstSeenCompleteCaptchaChallenges[message.value] = message
+      if (type.match(/challengeverification/i)) {
+        delete this.firstSeenIncompleteChallenges[message.value]
+        this.firstSeenCompleteChallenges[message.value] = message
       }
     }
   }
 
-  // catch completed captcha challenges received from other peers
-  addCompleteCaptchaChallenge(message) {
-    if (this.incompleteCaptchaChallenges[message.value]) {
-      delete this.incompleteCaptchaChallenges[message.value]
-      this.completeCaptchaChallenges[message.value] = message
+  // catch completed challenges received from other peers
+  addCompleteChallenge(message) {
+    if (this.incompleteChallenges[message.value]) {
+      delete this.incompleteChallenges[message.value]
+      this.completeChallenges[message.value] = message
     }
 
-    if (this.firstSeenIncompleteCaptchaChallenges[message.value]) {
-      delete this.firstSeenIncompleteCaptchaChallenges[message.value]
-      this.firstSeenCompleteCaptchaChallenges[message.value] = message
+    if (this.firstSeenIncompleteChallenges[message.value]) {
+      delete this.firstSeenIncompleteChallenges[message.value]
+      this.firstSeenCompleteChallenges[message.value] = message
     }
   }
 
   getStatistics() {
-    let incompleteCaptchaChallengeCount = 0
-    for (const i in this.incompleteCaptchaChallenges) {
-      incompleteCaptchaChallengeCount++
+    let incompleteChallengeCount = 0
+    for (const i in this.incompleteChallenges) {
+      incompleteChallengeCount++
     }
-    let completeCaptchaChallengeCount = 0
-    for (const i in this.completeCaptchaChallenges) {
-      completeCaptchaChallengeCount++
+    let completeChallengeCount = 0
+    for (const i in this.completeChallenges) {
+      completeChallengeCount++
     }
-    return {...this.messageTypesCounts, incompleteCaptchaChallengeCount, completeCaptchaChallengeCount}
+    return {...this.messageTypesCounts, incompleteChallengeCount, completeChallengeCount}
   }
 
   getFirstSeenStatistics() {
-    let incompleteCaptchaChallengeCount = 0
-    for (const i in this.firstSeenIncompleteCaptchaChallenges) {
-      incompleteCaptchaChallengeCount++
+    let incompleteChallengeCount = 0
+    for (const i in this.firstSeenIncompleteChallenges) {
+      incompleteChallengeCount++
     }
-    let completeCaptchaChallengeCount = 0
-    for (const i in this.firstSeenCompleteCaptchaChallenges) {
-      completeCaptchaChallengeCount++
+    let completeChallengeCount = 0
+    for (const i in this.firstSeenCompleteChallenges) {
+      completeChallengeCount++
     }
-    return {...this.firstSeenMessageTypesCounts, incompleteCaptchaChallengeCount, completeCaptchaChallengeCount}
+    return {...this.firstSeenMessageTypesCounts, incompleteChallengeCount, completeChallengeCount}
   }
 }
 
-const ownerNode = new OwnerNode({name: 'ownerNode'})
-const friendlyNode1 = new Node({name: 'friendlyNode1'})
+const communityOwnerNode = new CommunityOwnerNode({name: 'commuOwnerNode'})
+const attackedNode = new Node({name: 'attackedNode'})
 const friendlyNode2 = new Node({name: 'friendlyNode2'})
 const friendlyNode3 = new Node({name: 'friendlyNode3'})
 const friendlyNode4 = new Node({name: 'friendlyNode4'})
 // const friendlyNode5 = new Node({name:'friendlyNode5'})
 const spammerNode = new SpammerNode({name: 'spammerNode'})
 
-let friendlyNode1Count = 100
-let spammerNodeCount = 900
+let friendlyNodesMessageCount = 100
+let spammerNodeMessageCount = 900
 
 ;(async () => {
-  while (friendlyNode1Count--) {
+  while (friendlyNodesMessageCount-- > 0) {
+    console.log('friendlyNodesMessageCount left', friendlyNodesMessageCount)
     await delay(getNextMessageDelay())
-    friendlyNode1.sendCaptchaChallengeRequest()
-    friendlyNode2.sendCaptchaChallengeRequest()
+    friendlyNode2.sendChallengeRequest()
+    friendlyNode3.sendChallengeRequest()
   }
-  while (spammerNodeCount--) {
-    spammerNode.sendCaptchaChallengeRequest()
+  while (spammerNodeMessageCount-- > 0) {
+    console.log('spammerNodeMessageCount left', spammerNodeMessageCount)
+    spammerNode.sendChallengeRequest()
   }
 })()
 
 ;(async () => {
-  while (spammerNodeCount--) {
+  while (spammerNodeMessageCount-- > 0) {
+    console.log('spammerNodeMessageCount left', spammerNodeMessageCount)
     await delay(getNextMessageDelay())
-    spammerNode.sendCaptchaChallengeRequest()
+    spammerNode.sendChallengeRequest()
   }
 })()
 
+const logStats = () =>{
+  console.log('\nfirst seen relayed messages only')
+  console.log('--------------------------------')
+
+  console.log('\nattackedNode received stats')
+  console.log('---------------------------')
+  attackedNode.printIpAddressesFirstSeenStatistics()
+  console.log('\nfriendlyNode2 received stats')
+  console.log('----------------------------')
+  friendlyNode2.printIpAddressesFirstSeenStatistics()
+  console.log('\nfriendlyNode3 received stats')
+  console.log('----------------------------')
+  friendlyNode3.printIpAddressesFirstSeenStatistics()
+
+  console.log('\nall relayed messages')
+  console.log('--------------------')
+
+  console.log('\nattackedNode received stats')
+  console.log('---------------------------')
+  attackedNode.printIpAddressesStatistics()
+  console.log('\nfriendlyNode2 received stats')
+  console.log('----------------------------')
+  friendlyNode2.printIpAddressesStatistics()
+  console.log('\nfriendlyNode3 received stats')
+  console.log('----------------------------')
+  friendlyNode3.printIpAddressesStatistics()
+}
+
+// log stats on 's' keypress
 const readline = require('readline')
 readline.emitKeypressEvents(process.stdin);
 if (process.stdin.isTTY) {
@@ -379,16 +422,5 @@ process.stdin.on('keypress', (str, key) => {
   if (key.name !== 's') {
     process.exit()
   }
-  console.log('\nfriendlyNode1 stats (the attacked node)')
-  console.log('---------------------------------------')
-  friendlyNode1.printIpAddressesStatistics()
-  console.log('\nfriendlyNode2 stats (regular node)')
-  console.log('----------------------------------')
-  friendlyNode2.printIpAddressesStatistics()
-  console.log('\nfriendlyNode3 stats (regular node)')
-  console.log('----------------------------------')
-  friendlyNode3.printIpAddressesStatistics()
-  console.log('\nfriendlyNode4 stats (regular node)')
-  console.log('----------------------------------')
-  friendlyNode4.printIpAddressesStatistics()
+  logStats()
 })
