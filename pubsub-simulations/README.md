@@ -1,10 +1,14 @@
+### Overview
+
 In simulation 1 we demonstrate that there is a strong correlation between "first seen" messages coming from a spammer.
 
 All messages are relayed multiple times by multiple nodes, "first seen" messages are the node that relays us a new, never seen before message.
 
 In simulation 2 we demonstrate that we can block spammer nodes eventually out of the network, using "first seen" messages. Since "first seen" messages come from nodes we are directly connected to, we can block nodes by peer id, IP address and/or IP range.
 
-Simulation 1: `spammerNode` sends 90 failed messages to `attackedNode`. `friendlyNode2` and `friendlyNode3` send 10 succeeded messages to all nodes. All nodes relay all messages except for `spammerNode`.
+### Simulation 1
+
+`spammerNode` sends 90 failed messages to `attackedNode`. `friendlyNode2` and `friendlyNode3` send 10 succeeded messages to all nodes. All nodes relay all messages except for `spammerNode`.
 
 By looking at statistics from all messages received, no correlation with the spammer could be found.
 
@@ -63,7 +67,9 @@ friendlyNode2   15      5               10      0               4       13
 commuOwnerNode  5       101             4       19              3       19
 ```
 
-Simulation 2: `spammerNode` sends 900 failed messages to `attackedNode`. `friendlyNode2` and `friendlyNode3` send 100 succeeded messages to all nodes. All nodes relay all messages except for `spammerNode`. If a node's "first seen" messages has more than 50 failed with a succeeded ratio lower than 0.6, the node will be blocked.
+### Simulation 2
+
+`spammerNode` sends 900 failed messages to `attackedNode`. `friendlyNode2` and `friendlyNode3` send 100 succeeded messages to all nodes. All nodes relay all messages except for `spammerNode`. If a node's "first seen" messages has more than 50 failed with a succeeded ratio lower than 0.6, the node will be blocked.
 
 By looking only at "first seen" messages, we can see that `spammerNode` was blocked after 50 messages, and `attackedNode` was not blocked even if he did relay a large amount of failed messages.
 
@@ -95,3 +101,9 @@ commuOwnerNode  27      223             42      175             0       183     
 ```
 
 It would be possible for `spammerNode` to keep his succeeded ratio under control and not get blocked, but then it puts an upper bound on how much spam he can send. Presumably it would also be possible for `attackedNode` to keep his ratio under control and stop relaying messages when he is under attack, maybe only relay messages for nodes he has a long history of high succeeded ratio with.
+
+### Running the simulations
+```
+node pubsub-simulations/simulation1
+node pubsub-simulations/simulation2
+```
