@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> **Plebbit has rebranded to [Bitsocial](https://bitsocial.net).** This repository is archived and preserved for historical reference.
+>
+> For current protocol specifications and proposals, see [Bitsocial Improvement Proposals (BSIPs)](https://bsips.bitsocial.net) and the [BSIPs repository](https://github.com/bitsocialnet/BSIPs).
+>
+> Find current projects at [@bitsocialnet](https://github.com/bitsocialnet).
+
 Plebbit is a serverless, adminless, decentralized Reddit alternative that has no blockchain transactions fees and uses captchas over peer-to-peer pubsub to prevent spam.
 
 - Whitepaper: [https://github.com/plebbit/discussions/whitepaper](https://github.com/plebbit/whitepaper/discussions/2)
